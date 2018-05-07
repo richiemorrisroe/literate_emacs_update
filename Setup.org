@@ -1,0 +1,576 @@
+#+TITLE: Setup Stuff
+#+OPTIONS: toc nil
+
+This file documents some of the crazy things that I have to do n order to have all of my dependencies available.
+
+* Overall
+** Emacs stuff 
+I'll need to keep this updated, when Emacs gets version bumped.
+#+BEGIN_SRC sh :results none :eval no
+  cd ~
+  sudo apt-get install build-dep emacs24
+  git clone git://git.savannah.gnu.org/emacs.git
+
+#+END_SRC
+
+#+BEGIN_SRC sh :eval no
+   cd ~/emacs
+    ./autogen.sh
+    ./configure
+    make
+#+END_SRC
+
+
+#+BEGIN_SRC sh :results none
+  sudo make install
+#+END_SRC
+Seperate out the sudo parts, to prevent breakages.
+*** COMMENT Package/Settings Configuration
+
+#+BEGIN_SRC elisp :results none :tangle archives.el
+    (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
+                             ("gnu" . "https://elpa.gnu.org/packages/")
+                             ("marmalade" . "https://marmalade-repo.org/packages/")))
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/"))
+#+END_SRC
+First, setup the archives. Next, install a list of packages that I tend to use
+
+#+BEGIN_SRC elisp :tangle packages.el
+  (setq package-list '(auctex
+                       bash-completion
+                       flycheck
+                       magit
+                       use-package
+                       elpy
+                       smartparens))
+  ;;taken from http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
+  (package-initialize)
+
+  (unless package-archive-contents
+    (package-refresh-contents))
+
+  (dolist (package package-list)
+    (unless (package-installed-p package)
+      (package-install package)))
+
+
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC elisp :tangle package-new.el
+(use-package magit)
+(use-package bashcompletion)
+(use-package flycheck
+  :config
+  (global-flycheck-mode 1))
+;; (use-package auctex
+;;   :init
+;;   (require 'tex)
+;;   :config
+;;   ((setq TeX-auto-save t)
+;; (setq TeX-parse-self t)))
+(use-package elpy
+  :init
+  (elpy-enable))
+(use-package smartparens
+  :config
+  (smartparens-global-mode t)
+  (require 'smartparens-config))
+(use-package ess)
+#+END_SRC
+
+
+
+#+BEGIN_SRC emacs-lisp :tangle keybindings.el
+  (global-set-key "\C-cg" 'magit-status)
+(global-set-key "\C-co" 'browse-url-at-point)
+  (global-set-key "\C-cm" 'man)
+  (global-set-key "\C-cr" 'replace-string); keybinding for replace string
+  (global-set-key "\C-cs" 'shell); keybinding to start shell process
+  ;; (global-set-key "\C-xp" 'check-parens); keybinding to  check for unbalanced
+  ;;parens
+  (global-set-key "\C-xt" 'transpose-lines); keybinding to transpose lines
+  ;;org mode keybindings
+  (global-set-key (kbd "\C-cw") 'balance-windows)
+  (global-set-key "\C-cl" 'org-store-link)
+       (global-set-key "\C-cc" 'org-capture)
+       (global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
+  (local-set-key "\C-cC-e" 'ess-eval-chunk)
+  (local-set-key "\C-cC-h" 'ess-sos)
+  (global-set-key "\C-xc" 'inferior-lisp)
+(global-set-key "\C-ci" 'org-redisplay-inline-images)
+  (defun create-key-group (prefix &rest commands)
+    "Creates a group of key bindings by making a sparse keymap
+  bound to the first argument, a vector describing a key.
+  The rest of the arguments should be cons pairs mapping
+  single characters to commands."
+    (global-set-key prefix (make-sparse-keymap))
+    (dolist (command commands)
+      (global-set-key (vconcat prefix (vector (car command)))
+                      (cdr command))))
+#+END_SRC
+
+#+RESULTS:
+: create-key-group
+
+#+BEGIN_SRC emacs-lisp :eval false
+   # (mapc 'global-unset-key '([left] [right] [up] [down]));;learned this now, no need to keep the
+
+#+END_SRC
+
+This is my most controversial keyboard change. I learned to live with it, but fell back to my old ways when I allowed the arrow keys to return. I'm unsetting it now, I like my arrow-keys.
+
+#+BEGIN_SRC elisp :tangle cpp.el
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+;; replace the `completion-at-point' and `complete-symbol' bindings in
+;; irony-mode's buffers by irony-mode's function
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle setup-editing.el
+(setq electric-indent-mode t)
+(load-theme 'wheatgrass t)
+(setq sentence-end-double-space nil)
+(setq tab-always-indent 'complete)
+(add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
+(add-hook 'after-init-hook 'global-company-mode)
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(add-to-list 'display-buffer-alist '("*shell*" display-buffer-same-window))
+(smartparens-global-mode t)
+(require 'smartparens-config)
+(setq save-interprogram-paste-before-kill t)
+(require 'cedet)
+(require 'semantic)
+(add-to-list 'load-path "~/mmix-mode")
+    (autoload 'mmix-mode "mmix-mode" "Major mode for editing MMIX files" t)
+    (setq auto-mode-alist (cons '("\\.mms" . mmix-mode)
+                                      auto-mode-alist))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle ess.el
+  (setq ess-eldoc-show-on-symbol t)
+(setq ess-tab-complete-in-script t)
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/ess")
+
+(require 'ess-site)
+#+END_SRC
+
+This shows function arguments whenever point is on a symbol (i.e. function).
+
+#+RESULTS:
+#+BEGIN_SRC emacs-lisp :tangle latex-ess.el
+  (add-hook 'Rnw-mode-hook
+            (lambda ()
+              (add-to-list 'TeX-command-list
+                           '("Sweave" "R CMD Sweave %s"
+                             TeX-run-command nil (latex-mode) :help "Run Sweave") t)
+              (add-to-list 'TeX-command-list
+                           '("LatexSweave" "%l %(mode) %s"
+                             TeX-run-TeX nil (latex-mode) :help "Run Latex after Sweave") t)
+              (setq TeX-command-default "Sweave")))
+  (setq TeX-file-extensions
+        '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
+  (add-to-list 'auto-mode-alist '("\\.Rnw\\'" . Rnw-mode))
+  (add-to-list 'auto-mode-alist '("\\.Snw\\'" . Rnw-mode))
+  (setq ess-swv-plug-into-AUCTeX-p t)
+  (autoload 'ess-rdired "ess-rdired"
+         "View *R* objects in a dired-like buffer." t)
+  (setq ess-help-pop-to-buffer t)
+  (setq TeX-auto-save t);;tell tex to autosave
+  (setq TeX-parse-self t)
+  (setq reftex-plug-into-AUCTeX t)
+  (setq-default TeX-master nil)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
+  (add-hook 'Rnw-mode-hook 'turn-on-reftex)
+  (add-hook 'tex-mode-hook (function (lambda () (setq ispell-parser 'tex))))
+  (setq reftex-file-extensions
+        '(("Snw" ".Snw")
+          ("Rnw" ".Rnw")
+          ("nw" ".nw")
+  ("tex" ".tex" ".ltx")
+  ("bib" ".bib")))
+  (setq TeX-file-extensions
+        '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
+  (autoload 'ebib "ebib" "Ebib, a BibTeX database manager." t)
+  (setq reftex-external-file-finders
+        '(("tex" . "kpsewhich -format=.tex %f")
+          ("bib" . "kpsewhich -format=.bib %f")))
+  (add-hook 'prog-mode-hook 'auto-revert-mode)
+  (add-hook 'LaTeX-mode-hook 'auto-revert-mode)
+  (setq reftex-try-all-extensions t)
+
+#+END_SRC
+#+BEGIN_SRC sh :tangle setup.sh
+  git config --global user.email "richie.morrisroe@gmail.com"
+#+END_SRC
+
+We need to setup git before magit will work properly.
+
+#+BEGIN_SRC sh :tangle setup.sh
+sudo apt-get install chromium-browser
+##install ctrl caps lock##
+##due to bug, currently gnome-tweak-tool needed
+sudo apt-get install gnome-tweak-tool
+sudo apt-get build-dep emacs24
+sudo apt-get install r-base r-base-dev r-doc python-pandas python-numpy python-matplotlib python-pip
+sudo apt-get install gawk
+sudo apt-get install lamp-server
+##graphics really shit on 14.04 Bumblebee
+##ended up installing a proprietary driver because of Skype
+sudo apt-get install exfat-fuse exfat-utils
+sudo apt-get install mysql-server mysql-client
+sudo apt-get install git
+sudo apt-get install ipython
+sudo apt-get install python-pandas
+sudo apt-get install python-sklearn
+sudo apt-get install lm-sensors
+sudo add-apt-repository ppa:linrunner/tlp
+sudo apt-get update
+sudo apt-get install tlp tlp-rdw
+sudo apt-get install whois
+#+END_SRC
+
+#+RESULTS:
+
+
+
+#+BEGIN_SRC elisp :tangle org-setup.el
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+     (emacs-lisp . t)
+     (sql . t)
+     (python . t)
+     (latex . t)
+     ;; (sh . t)
+     (java . t)
+     (C . t)
+     (lisp . t)
+     ;; (stan . t)
+     ))
+  (setq org-babel-confirm-evaluate nil)
+  (setq org-default-notes-file "~/Dropbox/Notes/notes.org")
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  (global-set-key "\C-ci" 'org-redisplay-inline-images)
+
+  (setq org-edit-src-content-indentation 0)
+  (setq org-src-tab-acts-natively t)
+  (setq org-src-preserve-indentation t)
+  (setq exec-path (append exec-path '("/home/richie/anaconda3/bin/" "~/.local/bin/")))
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC emacs-lisp :tangle google.el
+  (use-package google-this
+    :config
+    (google-this-mode 1))
+
+#+END_SRC
+
+#+RESULTS:
+: t
+
+
+
+First, allow org to do it's thing.
+
+#+BEGIN_SRC elisp :tangle setup-editing.el
+  (add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
+  (setq debug-on-error t)
+  (setq inferior-lisp-program "sbcl")
+  (setq-default indent-tabs-mode nil)
+  (setq synonyms-file        "~/mythesaurus/")
+  (setq synonyms-cache-file  "~/mythesaurus/cache")
+  (show-paren-mode 1);;always show bracket highlighting
+  (global-linum-mode 1);;always show line numbers
+  (global-visual-line-mode 1) ;;always wrap words visually
+  (global-font-lock-mode 1)
+  (transient-mark-mode t) ;;turn on transient mark mode, must have turned it off by accident.
+  (setq x-select-enable-clipboard t) ;; enable clipboard in and out of emacs
+  (fset 'yes-or-no-p 'y-or-n-p) ;;allow y or n to stand for yes or no
+  (put 'erase-buffer 'disabled nil) ;;enable erase buffer command
+  (put 'set-goal-column 'disabled nil) ;;enable set goal column
+  ;; (load-theme 'wheatgrass t)
+  (setq tramp-default-method "ssh")
+
+  (put 'upcase-region 'disabled nil)
+  (put 'downcase-region 'disabled nil)
+  (server-start)
+  (add-hook 'prog-mode-hook 'subword-mode)
+  (global-set-key "\C-cp" 'run-python)
+
+#+END_SRC
+
+#+BEGIN_SRC elisp :name tramp
+  (eval-after-load "tramp"
+    '(progn
+       (defvar sudo-tramp-prefix
+         "/sudo::"
+         (concat "Prefix to be used by sudo commands when building tramp path "))
+
+       (defun sudo-file-name (filename) (concat sudo-tramp-prefix filename))
+
+       (defun sudo-find-file (filename &optional wildcards)
+         "Calls find-file with filename with sudo-tramp-prefix prepended"
+         (interactive "fFind file with sudo ")
+         (let ((sudo-name (sudo-file-name filename)))
+           (apply 'find-file
+                  (cons sudo-name (if (boundp 'wildcards) '(wildcards))))))
+
+       (defun sudo-reopen-file ()
+         "Reopen file as root by prefixing its name with sudo-tramp-prefix and by clearing buffer-read-only"
+         (interactive)
+         (let*
+             ((file-name (expand-file-name buffer-file-name))
+              (sudo-name (sudo-file-name file-name)))
+           (progn
+             (setq buffer-file-name sudo-name)
+             (rename-buffer sudo-name)
+             (setq buffer-read-only nil)
+             (message (concat "Set file name to " sudo-name)))))
+
+       (global-set-key "\C-x+" 'sudo-find-file)
+       (global-set-key "\C-x!" 'sudo-reopen-file)))
+#+END_SRC
+
+#+BEGIN_SRC elisp :name org
+
+#+END_SRC
+
+#+RESULTS:
+: org-redisplay-inline-images
+
+
+** Power Stuff
+
+#+BEGIN_SRC sh
+  sudo add-apt-repository ppa:linrunner/tlp
+  sudo apt-get update
+  sudo apt-get install tlp tlp-rdw
+  sudo apt-get install tp-smapi-dkms acpi-call-tools
+#+END_SRC
+
+
+Add thinkpad/Linux related power saving functions. The joy of tlp is that it just works, rather than requiring me to mess around with kernel settings.
+** LaTeX
+
+#+BEGIN_SRC sh
+  sudo apt-get install texlive-full
+#+END_SRC
+
+Overkill, but I don't like error messages when running LaTeX.
+
+#+BEGIN_SRC sh
+  sudo apt-get install pandoc
+#+END_SRC
+
+Pandoc is great for converting one format to another, and supports word, which is nice.
+
+** Python stuff
+
+*** TODO Document conda installation
+- conda handles binary dependencies, which is better than pip
+ #+BEGIN_SRC sh :session :results none
+  sudo apt-get install python3-numpy python3-scipy python3-pip
+ #+END_SRC
+
+ Get Numpy, Scipy and Pip.
+
+ I have installed so much Python without recording it here.
+ #+BEGIN_SRC sh
+conda install importmagic autopep8 yapf flake8
+ #+END_SRC
+
+ - Install stuff for elpy
+ #+RESULTS:
+
+#+BEGIN_SRC sh
+curl https://repo.anaconda.com/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+bash Anaconda-latest-Linux-x86_64.sh
+
+#+END_SRC
+** Webserver stuff
+#+BEGIN_SRC sh
+  sudo apt-get install php7 mysql apache2
+#+END_SRC
+
+
+Because I'll need it at some point.
+
+#+BEGIN_SRC sh
+  # installs add-apt-repository
+  sudo apt-get install software-properties-common
+
+  sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
+  sudo add-apt-repository "deb http://dl.hhvm.com/ubuntu $(lsb_release -sc) main"
+  sudo apt-get update
+  sudo apt-get install hhvm
+#+END_SRC
+
+
+
+** Deep Learning related stuff
+#+BEGIN_SRC sh
+  sudo ln -s /usr/lib/nvidia-cuda-toolkit/bin/gcc /usr/bin/gcc-4.9
+  sudo ln -s  /usr/lib/nvidia-cuda-toolkit/bin/g++ usr/bin/g++-4.9
+
+#+END_SRC
+
+#+RESULTS:
+
+Need some magic to work around nvcc using old version of gcc.
+This magic works on
+
+#+BEGIN_SRC sh
+cat /etc/release
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC sh :results output
+  cat /etc/nvcc.profile
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+# Syntax:
+#   name  = <text>   assignment
+#   name ?= <text>   conditional assignment
+#   name += <text>   prepend
+#   name =+ <text>   append
+# Predefined variables: _SPACE_, _HERE_, _TARGET_DIR_, _TARGET_SIZE_
+
+NVVMIR_LIBRARY_DIR = /usr/lib/nvidia-cuda-toolkit/libdevice
+
+PATH		+= /usr/lib/nvidia-cuda-toolkit/bin:
+
+#INCLUDES	+=
+
+LIBRARIES	=+ $(_SPACE_) -L/usr/lib/x86_64-linux-gnu/stubs
+
+#CUDAFE_FLAGS	+=
+#PTXAS_FLAGS	+=
+#+end_example
+
+Grab the path, and alter the symlinks above to point to the same directory as nvcc
+
+** GCC 4<5
+The transition has caused me some difficulty.
+
+#+BEGIN_SRC sh
+  sudo apt-get-install g++-4.9.10
+  sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 10
+#+END_SRC
+Otherwise, CUDA is unavailable.
+
+
+
+*** Torch (Lua)
+#+BEGIN_SRC sh
+  cd ~
+  curl -s https://raw.githubusercontent.com/torch/ezinstall/master/install-deps | bash
+  git clone https://github.com/torch/distro.git ~/torch --recursive
+  cd ~/torch; ./install.sh
+#+END_SRC
+next get iTorch
+#+BEGIN_SRC sh
+  cd ~
+  git clone https://github.com/facebook/iTorch.git
+  cd iTorch
+  luarocks make
+#+END_SRC
+
+Torch was super easy. Tensor Flow wasn't that much harder (but sure did require a lot of steps).
+
+
+*** TensorFlow
+
+#+BEGIN_SRC sh
+  sudo apt-get install pkg-config zip g++ zlib1g-dev unzip
+  ##you need cudnn, typically I have it in Downloads.
+  git clone --recursive-submodules https://github.com/tensorflow/tensorflow
+#+END_SRC
+
+#+BEGIN_SRC sh
+  cd tensorflow;
+  ./configure
+  bazel build -c opt --config=cuda //tensorflow/cc:tutorials_example_trainer
+
+#+END_SRC
+
+Hmmm, it certainly seemed much harder than that.
+I can guarentee that it takes a long time, and it uses all of your available cores.
+____Elapsed time: 2342.696s, Critical Path: 2321.72s (according to bazel build).
+And I couldn't get it to work :(
+
+*** TODO PyTorch (document install)
+- this is pretty easy, but I don't have it done
+** Missing Libraries
+
+#+BEGIN_SRC sh :session :eval maybe
+  sudo apt-get install apt-file
+  sudo apt-file update
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC sh :session :eval maybe
+  sudo apt-file search proj_api.h
+#+END_SRC
+
+Returns libproj-dev, so next step is to install that.
+
+#+BEGIN_SRC sh :eval maybe
+  sudo apt-get install libproj-dev
+#+END_SRC
+
+Get apt-file, so that we can search for missing libraries throughout this process.
+
+
+** R related stuff
+
+#+BEGIN_SRC R :session :eval maybe :tangle setup_r.R
+  update.packages()
+install.packages(c("ggplot2", "dplyr", "lubridate", "tidyr", "psych", "caret", "devtools", "broom"))
+install.packages(c("tidyverse", "forecast", "modelr", "pryr", "magrittr", "glmnet", "randomForest", "lintr", "xtable", "testthat"))
+install.packages(c("lintr", "h2o", "sparklyr", "xgboost"))
+#+END_SRC
+
+Install the essentials of the Hadleyverse.
+
+#+BEGIN_SRC R :session :eval maybe
+#+END_SRC
+
+This actually does most of the work.
+
+#+BEGIN_SRC R :session :eval maybe
+  install.packages("pryr")
+#+END_SRC
+Useful for inspecting R objects.
+
+
+#+BEGIN_SRC R :session :eval no
+  install.packages("forecast")
+#+END_SRC
+
+#+RESULTS:
+
+Super useful for time series
+
+ $A = \pi*r^{2}$
