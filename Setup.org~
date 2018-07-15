@@ -25,36 +25,19 @@ I'll need to keep this updated, when Emacs gets version bumped.
   sudo make install
 #+END_SRC
 Seperate out the sudo parts, to prevent breakages.
-***  Package/Settings Configuration
+*** COMMENT Package/Settings Configuration
 
-
-#+BEGIN_SRC elisp :results none :tangle .emacs
-  (load "~/Dropbox/personal-emacs/packages.el")
-  (load "~/Dropbox/personal-emacs/package-new.el")
-  (load "~/Dropbox/personal-emacs/keybindings.el")
-  (load "~/Dropbox/personal-emacs/cpp.el")
-  (load "~/Dropbox/personal-emacs/setup-editing.el")
-  (load "~/Dropbox/personal-emacs/ess.el")
-  (load "~/Dropbox/personal-emacs/latex-ess.el")
-  (load "~/Dropbox/personal-emacs/org-setup.el")
-  (load "~/Dropbox/personal-emacs/tramp.el")
-#+END_SRC
-=======
-
-
-#+BEGIN_SRC elisp :results none 
+#+BEGIN_SRC elisp :results none :tangle archives.el
     (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
                              ("gnu" . "https://elpa.gnu.org/packages/")
                              ("marmalade" . "https://marmalade-repo.org/packages/")))
   (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
   (add-to-list 'package-archives
-  '("melpa" . "https://melpa.org/packages/"))
+               '("melpa" . "https://melpa.org/packages/"))
 #+END_SRC
 First, setup the archives. Next, install a list of packages that I tend to use
 
-
-
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :tangle packages.el
   (setq package-list '(auctex
                        bash-completion
                        flycheck
@@ -75,56 +58,28 @@ First, setup the archives. Next, install a list of packages that I tend to use
 
 #+END_SRC
 
-I tend not to use this anymore, as use-package provides a far superior
-method of managing this
-
-
 #+RESULTS:
 
 #+BEGIN_SRC elisp :tangle package-new.el
-    (require 'package)
-    (setq package-enable-at-startup nil)
-    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-    (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-    (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-    (package-initialize)
-
-    (unless (package-installed-p 'use-package)
-      (package-refresh-contents)
-      (package-install 'use-package))
-
-    (eval-when-compile
-      (require 'use-package))
-    (require 'diminish)
-    (require 'bind-key)
-    (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
-				 ("gnu" . "https://elpa.gnu.org/packages/")
-				 ("marmalade" . "https://marmalade-repo.org/packages/")
-				 ("org" . "http://orgmode.org/elpa/")
-				 ("melpa" . "https://melpa.org/packages/")
-				 ))
-    (use-package magit :ensure t)
-    (use-package flycheck
-		 :ensure t
-		 :config
-      (global-flycheck-mode 1))
-  (use-package tex 
-    :ensure auctex
-    :config
-    ((setq TeX-auto-save t)
-
-    (setq TeX-parse-self t))  
-  )
-    (use-package elpy
-		 :ensure t
-		 :init
-		 (elpy-enable))
-    (use-package smartparens
-		 :ensure t
-		 :config
-		 (smartparens-global-mode t)
-		 (require 'smartparens-config))
-    (use-package ess)
+(use-package magit)
+(use-package bashcompletion)
+(use-package flycheck
+  :config
+  (global-flycheck-mode 1))
+;; (use-package auctex
+;;   :init
+;;   (require 'tex)
+;;   :config
+;;   ((setq TeX-auto-save t)
+;; (setq TeX-parse-self t)))
+(use-package elpy
+  :init
+  (elpy-enable))
+(use-package smartparens
+  :config
+  (smartparens-global-mode t)
+  (require 'smartparens-config))
+(use-package ess)
 #+END_SRC
 
 
@@ -261,36 +216,33 @@ This shows function arguments whenever point is on a symbol (i.e. function).
 
 #+END_SRC
 #+BEGIN_SRC sh :tangle setup.sh
-  sudo apt install git
   git config --global user.email "richie.morrisroe@gmail.com"
 #+END_SRC
 
 We need to setup git before magit will work properly.
 
 #+BEGIN_SRC sh :tangle setup.sh
-  sudo apt install curl
-  sudo apt-get install chromium-browser
-  ##install ctrl caps lock##
-  ##due to bug, currently gnome-tweak-tool needed
-  sudo apt-get install gnome-tweak-tool
-  sudo apt-get build-dep emacs25
-  sudo apt-get install r-base-core r-base-dev r-doc python-pandas python-numpy python-matplotlib python-pip
-  sudo apt-get install gawk
-  sudo apt-get install lamp-server
-  ##graphics really shit on 14.04 Bumblebee
-  ##ended up installing a proprietary driver because of Skype
-  sudo apt-get install exfat-fuse exfat-utils
-  sudo apt-get install mysql-server mysql-client
-  sudo apt-get install git
-  sudo apt-get install ipython
-  sudo apt-get install python-pandas
-  sudo apt-get install python-sklearn
-  sudo apt-get install lm-sensors
-  sudo add-apt-repository ppa:linrunner/tlp
-  sudo apt-get update
-  sudo apt-get install tlp tlp-rdw
-  sudo apt-get install whois
-  sudo apt-get install nvidia-cuda-toolkit
+sudo apt-get install chromium-browser
+##install ctrl caps lock##
+##due to bug, currently gnome-tweak-tool needed
+sudo apt-get install gnome-tweak-tool
+sudo apt-get build-dep emacs24
+sudo apt-get install r-base r-base-dev r-doc python-pandas python-numpy python-matplotlib python-pip
+sudo apt-get install gawk
+sudo apt-get install lamp-server
+##graphics really shit on 14.04 Bumblebee
+##ended up installing a proprietary driver because of Skype
+sudo apt-get install exfat-fuse exfat-utils
+sudo apt-get install mysql-server mysql-client
+sudo apt-get install git
+sudo apt-get install ipython
+sudo apt-get install python-pandas
+sudo apt-get install python-sklearn
+sudo apt-get install lm-sensors
+sudo add-apt-repository ppa:linrunner/tlp
+sudo apt-get update
+sudo apt-get install tlp tlp-rdw
+sudo apt-get install whois
 #+END_SRC
 
 #+RESULTS:
@@ -323,7 +275,6 @@ We need to setup git before magit will work properly.
 #+END_SRC
 
 #+RESULTS:
-| ~/anaconda3/bin | /home/richie/torch/install/bin | /home/richie/bin | /usr/local/sbin | /usr/local/bin | /usr/sbin | /usr/bin | /sbin | /bin | /usr/games | /usr/local/games | /snap/bin | /usr/local/libexec/emacs/27.0.50/x86_64-pc-linux-gnu | /home/richie/anaconda3/bin/ | ~/.local/bin/ | /sw/bin | /home/richie/anaconda3/bin/ | ~/.local/bin/ |
 
 #+BEGIN_SRC emacs-lisp :tangle google.el
   (use-package google-this
@@ -366,7 +317,7 @@ First, allow org to do it's thing.
 
 #+END_SRC
 
-#+BEGIN_SRC elisp :name tramp.el
+#+BEGIN_SRC elisp :name tramp
   (eval-after-load "tramp"
     '(progn
        (defvar sudo-tramp-prefix
@@ -396,13 +347,6 @@ First, allow org to do it's thing.
 
        (global-set-key "\C-x+" 'sudo-find-file)
        (global-set-key "\C-x!" 'sudo-reopen-file)))
-(setq putty-directory "C:/Program Files/PuTTY")
-(when (eq window-system 'w32)
-  (setq tramp-default-method "plink")
-  (when (and (not (string-match putty-directory (getenv "PATH")))
-	     (file-directory-p putty-directory))
-    (setenv "PATH" (concat putty-directory ";" (getenv "PATH")))
-    (add-to-list 'exec-path putty-directory)))
 #+END_SRC
 
 #+BEGIN_SRC elisp :name org
@@ -459,13 +403,6 @@ conda install importmagic autopep8 yapf flake8
 #+BEGIN_SRC sh
 curl https://repo.anaconda.com/archive/Anaconda3-5.1.0-Linux-x86_64.sh
 bash Anaconda-latest-Linux-x86_64.sh
-
-#+END_SRC
-
-- conda needs a new link each time
-
-#+BEGIN_SRC sh setup_py.sh
-  conda install scipy numpy sklearn pandas seaborn torch torch-vision requests 
 
 #+END_SRC
 ** Webserver stuff

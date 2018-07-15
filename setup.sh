@@ -23,3 +23,4 @@ sudo add-apt-repository ppa:linrunner/tlp
 sudo apt-get update
 sudo apt-get install tlp tlp-rdw
 sudo apt-get install whois
+sudo apt-get install nvidia-cuda-toolkit
