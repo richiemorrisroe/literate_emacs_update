@@ -17,26 +17,26 @@
     (setq auto-mode-alist (cons '("\\.mms" . mmix-mode)
                                       auto-mode-alist))
 
-(add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
-(setq debug-on-error t)
-(setq inferior-lisp-program "sbcl")
-(setq-default indent-tabs-mode nil)
-(setq synonyms-file        "~/mythesaurus/")
-(setq synonyms-cache-file  "~/mythesaurus/cache")
-(show-paren-mode 1);;always show bracket highlighting
-(global-linum-mode 1);;always show line numbers
-(global-visual-line-mode 1) ;;always wrap words visually
-(global-font-lock-mode 1)
-(transient-mark-mode t) ;;turn on transient mark mode, must have turned it off by accident.
-(setq x-select-enable-clipboard t) ;; enable clipboard in and out of emacs
-(fset 'yes-or-no-p 'y-or-n-p) ;;allow y or n to stand for yes or no
-(put 'erase-buffer 'disabled nil) ;;enable erase buffer command
-(put 'set-goal-column 'disabled nil) ;;enable set goal column
-;; (load-theme 'wheatgrass t)
-(setq tramp-default-method "ssh")
+  (add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
+  (setq debug-on-error t)
+  (setq inferior-lisp-program "sbcl")
+  (setq-default indent-tabs-mode nil)
+  (setq synonyms-file        "~/mythesaurus/")
+  (setq synonyms-cache-file  "~/mythesaurus/cache")
+  (show-paren-mode 1);;always show bracket highlighting
+  (global-linum-mode 1);;always show line numbers
+  (global-visual-line-mode 1) ;;always wrap words visually
+  (global-font-lock-mode 1)
+  (transient-mark-mode t) ;;turn on transient mark mode, must have turned it off by accident.
+  (setq x-select-enable-clipboard t) ;; enable clipboard in and out of emacs
+  (fset 'yes-or-no-p 'y-or-n-p) ;;allow y or n to stand for yes or no
+  (put 'erase-buffer 'disabled nil) ;;enable erase buffer command
+  (put 'set-goal-column 'disabled nil) ;;enable set goal column
+  ;; (load-theme 'wheatgrass t)
+  (setq tramp-default-method "ssh")
 
-(put 'upcase-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
-(server-start)
-(add-hook 'prog-mode-hook 'subword-mode)
-(global-set-key "\C-cp" 'run-python)
+  (put 'upcase-region 'disabled nil)
+  (put 'downcase-region 'disabled nil)
+  (server-start)
+  (add-hook 'prog-mode-hook 'subword-mode)
+  (global-set-key "\C-cp" 'run-python)
