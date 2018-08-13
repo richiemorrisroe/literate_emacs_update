@@ -6,6 +6,11 @@ This file documents some of the crazy things that I have to do n order to have a
 * Overall
 ** Emacs stuff 
 I'll need to keep this updated, when Emacs gets version bumped.
+
+#+BEGIN_SRC sh
+wget https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb
+#+END_SRC
+
 #+BEGIN_SRC sh :results none :eval no
   cd ~
   sudo apt-get install build-dep emacs24
@@ -26,6 +31,19 @@ I'll need to keep this updated, when Emacs gets version bumped.
 #+END_SRC
 Seperate out the sudo parts, to prevent breakages.
 ***  Package/Settings Configuration
+#+BEGIN_SRC elisp :results none :tangle .emacs
+    ;; (load "~/Dropbox/personal-emacs/packages.el")
+    (load "~/Dropbox/personal-emacs/package-new.el")
+    (load "~/Dropbox/personal-emacs/keybindings.el")
+    (load "~/Dropbox/personal-emacs/cpp.el")
+    (load "~/Dropbox/personal-emacs/setup-editing.el")
+    (load "~/Dropbox/personal-emacs/ess.el")
+    (load "~/Dropbox/personal-emacs/latex-ess.el")
+    (load "~/Dropbox/personal-emacs/org-setup.el")
+  (load "~/Dropbox/personal-emacs/tramp.el")
+  ;;default anaconda path after install
+  (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path))
+#+END_SRC
 
 #+BEGIN_SRC elisp :results none 
     (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
@@ -36,6 +54,8 @@ Seperate out the sudo parts, to prevent breakages.
   '("melpa" . "https://melpa.org/packages/"))
 #+END_SRC
 First, setup the archives. Next, install a list of packages that I tend to use
+
+
 
 #+BEGIN_SRC elisp
   (setq package-list '(auctex
@@ -57,6 +77,10 @@ First, setup the archives. Next, install a list of packages that I tend to use
 
 
 #+END_SRC
+
+I tend not to use this anymore, as use-package provides a far superior
+method of managing this
+
 
 #+RESULTS:
 
@@ -87,13 +111,14 @@ First, setup the archives. Next, install a list of packages that I tend to use
 		 :ensure t
 		 :config
       (global-flycheck-mode 1))
-  ;; (use-package tex 
-  ;;   :ensure auctex
-  ;;   :config
-  ;;   ((setq TeX-auto-save t)
 
-  ;;   (setq TeX-parse-self t))  
-  ;; )
+  (use-package tex 
+    :ensure auctex
+    ;; :config
+    ;; ((setq TeX-auto-save t)
+
+    ;; (setq TeX-parse-self t))  
+  )
     (use-package elpy
 		 :ensure t
 		 :init
@@ -104,7 +129,6 @@ First, setup the archives. Next, install a list of packages that I tend to use
 		 (smartparens-global-mode t)
 		 (require 'smartparens-config))
     (use-package ess)
-
 #+END_SRC
 
 
@@ -241,33 +265,37 @@ This shows function arguments whenever point is on a symbol (i.e. function).
 
 #+END_SRC
 #+BEGIN_SRC sh :tangle setup.sh
+  sudo apt install git
   git config --global user.email "richie.morrisroe@gmail.com"
 #+END_SRC
 
 We need to setup git before magit will work properly.
 
 #+BEGIN_SRC sh :tangle setup.sh
-sudo apt-get install chromium-browser
-##install ctrl caps lock##
-##due to bug, currently gnome-tweak-tool needed
-sudo apt-get install gnome-tweak-tool
-sudo apt-get build-dep emacs24
-sudo apt-get install r-base r-base-dev r-doc python-pandas python-numpy python-matplotlib python-pip
-sudo apt-get install gawk
-sudo apt-get install lamp-server
-##graphics really shit on 14.04 Bumblebee
-##ended up installing a proprietary driver because of Skype
-sudo apt-get install exfat-fuse exfat-utils
-sudo apt-get install mysql-server mysql-client
-sudo apt-get install git
-sudo apt-get install ipython
-sudo apt-get install python-pandas
-sudo apt-get install python-sklearn
-sudo apt-get install lm-sensors
-sudo add-apt-repository ppa:linrunner/tlp
-sudo apt-get update
-sudo apt-get install tlp tlp-rdw
-sudo apt-get install whois
+  sudo apt install curl
+  sudo apt-get install chromium-browser
+  ##install ctrl caps lock##
+  ##due to bug, currently gnome-tweak-tool needed
+  sudo apt-get install gnome-tweak-tool
+  sudo apt-get build-dep emacs25
+  sudo apt-get install r-base-core r-base-dev r-doc python-pandas python-numpy python-matplotlib python-pip
+  sudo apt-get install gawk
+  sudo apt-get install lamp-server
+  ##graphics really shit on 14.04 Bumblebee
+  ##ended up installing a proprietary driver because of Skype
+  sudo apt-get install exfat-fuse exfat-utils
+  sudo apt-get install mysql-server mysql-client
+  sudo apt-get install git
+  sudo apt-get install ipython
+  sudo apt-get install python-pandas
+  sudo apt-get install python-sklearn
+  sudo apt-get install lm-sensors
+  sudo add-apt-repository ppa:linrunner/tlp
+  sudo apt-get update
+  sudo apt-get install tlp tlp-rdw
+  sudo apt-get install whois
+  sudo apt-get install nvidia-cuda-toolkit
+  sudo apt install clang llvm cmake
 #+END_SRC
 
 #+RESULTS:
@@ -295,11 +323,13 @@ sudo apt-get install whois
 
   (setq org-edit-src-content-indentation 0)
   (setq org-src-tab-acts-natively t)
-  (setq org-src-preserve-indentation t)
-  (setq exec-path (append exec-path '("/home/richie/anaconda3/bin/" "~/.local/bin/")))
+(setq org-src-preserve-indentation t)
+; not idempotent, should probably check car exec-path first
+  (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path))
 #+END_SRC
 
 #+RESULTS:
+| ~/anaconda3/bin | /home/richie/torch/install/bin | /home/richie/bin | /usr/local/sbin | /usr/local/bin | /usr/sbin | /usr/bin | /sbin | /bin | /usr/games | /usr/local/games | /snap/bin | /usr/local/libexec/emacs/27.0.50/x86_64-pc-linux-gnu | /home/richie/anaconda3/bin/ | ~/.local/bin/ | /sw/bin | /home/richie/anaconda3/bin/ | ~/.local/bin/ |
 
 #+BEGIN_SRC emacs-lisp :tangle google.el
   (use-package google-this
@@ -426,7 +456,8 @@ Pandoc is great for converting one format to another, and supports word, which i
 
  I have installed so much Python without recording it here.
  #+BEGIN_SRC sh
-conda install importmagic autopep8 yapf flake8
+conda install -c conda-forge autopep8 yapf flake8
+conda install -c steamelephant importmagic 
  #+END_SRC
 
  - Install stuff for elpy
@@ -435,6 +466,13 @@ conda install importmagic autopep8 yapf flake8
 #+BEGIN_SRC sh
 curl https://repo.anaconda.com/archive/Anaconda3-5.1.0-Linux-x86_64.sh
 bash Anaconda-latest-Linux-x86_64.sh
+
+#+END_SRC
+
+- conda needs a new link each time
+
+#+BEGIN_SRC sh setup_py.sh
+  conda install scipy numpy sklearn pandas seaborn torch torch-vision requests 
 
 #+END_SRC
 ** Webserver stuff

@@ -24,13 +24,14 @@
 		 :ensure t
 		 :config
       (global-flycheck-mode 1))
-  ;; (use-package tex 
-  ;;   :ensure auctex
-  ;;   :config
-  ;;   ((setq TeX-auto-save t)
 
-  ;;   (setq TeX-parse-self t))  
-  ;; )
+  (use-package tex 
+    :ensure auctex
+    ;; :config
+    ;; ((setq TeX-auto-save t)
+
+    ;; (setq TeX-parse-self t))  
+  )
     (use-package elpy
 		 :ensure t
 		 :init
