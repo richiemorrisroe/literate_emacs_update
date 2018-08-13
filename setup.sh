@@ -1,4 +1,4 @@
-git config --global user.email "richie.morrisroe@gmail.com"
+  git config --global user.email "richie.morrisroe@gmail.com"
 
 sudo apt-get install chromium-browser
 ##install ctrl caps lock##

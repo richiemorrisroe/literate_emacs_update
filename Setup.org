@@ -87,13 +87,13 @@ First, setup the archives. Next, install a list of packages that I tend to use
 		 :ensure t
 		 :config
       (global-flycheck-mode 1))
-  (use-package tex 
-    :ensure auctex
-    :config
-    ((setq TeX-auto-save t)
+  ;; (use-package tex 
+  ;;   :ensure auctex
+  ;;   :config
+  ;;   ((setq TeX-auto-save t)
 
-    (setq TeX-parse-self t))  
-  )
+  ;;   (setq TeX-parse-self t))  
+  ;; )
     (use-package elpy
 		 :ensure t
 		 :init
@@ -282,7 +282,7 @@ sudo apt-get install whois
      (sql . t)
      (python . t)
      (latex . t)
-     ;; (sh . t)
+     (shell . t)
      (java . t)
      (C . t)
      (lisp . t)
