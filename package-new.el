@@ -16,7 +16,7 @@
     (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
 				 ("gnu" . "https://elpa.gnu.org/packages/")
 				 ("marmalade" . "https://marmalade-repo.org/packages/")
-				 ("org" . "http://orgmode.org/elpa/")
+				 ("org" . "https://orgmode.org/elpa/")
 				 ("melpa" . "https://melpa.org/packages/")
 				 ))
     (use-package magit :ensure t)
@@ -40,4 +40,6 @@
 		 :config
 		 (smartparens-global-mode t)
 		 (require 'smartparens-config))
-    (use-package ess)
+(use-package ess)
+(use-package helpful
+  :ensure t)

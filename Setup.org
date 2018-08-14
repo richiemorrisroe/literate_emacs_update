@@ -40,7 +40,7 @@ Seperate out the sudo parts, to prevent breakages.
     (load "~/Dropbox/personal-emacs/ess.el")
     (load "~/Dropbox/personal-emacs/latex-ess.el")
     (load "~/Dropbox/personal-emacs/org-setup.el")
-  (load "~/Dropbox/personal-emacs/tramp.el")
+(load "~/Dropbox/personal-emacs/tramp.el")
   ;;default anaconda path after install
   (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path))
 #+END_SRC
@@ -103,7 +103,7 @@ method of managing this
     (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
 				 ("gnu" . "https://elpa.gnu.org/packages/")
 				 ("marmalade" . "https://marmalade-repo.org/packages/")
-				 ("org" . "http://orgmode.org/elpa/")
+				 ("org" . "https://orgmode.org/elpa/")
 				 ("melpa" . "https://melpa.org/packages/")
 				 ))
     (use-package magit :ensure t)
@@ -127,7 +127,10 @@ method of managing this
 		 :config
 		 (smartparens-global-mode t)
 		 (require 'smartparens-config))
-    (use-package ess)
+(use-package ess)
+(use-package helpful
+  :ensure t)
+
 #+END_SRC
 
 
@@ -190,6 +193,35 @@ This is my most controversial keyboard change. I learned to live with it, but fe
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle setup-editing.el
+(setq
+   backup-by-copying t      ; don't clobber symlinks
+   backup-directory-alist
+   '(("." . "~/.saves/")))
+
+;; Note that the built-in `describe-function' includes both functions
+;; and macros. `helpful-function' is functions only, so we provide
+;; `helpful-callable' as a drop-in replacement.
+(global-set-key (kbd "C-h f") #'helpful-callable)
+
+(global-set-key (kbd "C-h v") #'helpful-variable)
+(global-set-key (kbd "C-h k") #'helpful-key)
+
+;; Lookup the current symbol at point. C-c C-d is a common keybinding
+;; for this in lisp modes.
+(global-set-key (kbd "C-c C-d") #'helpful-at-point)
+
+;; Look up *F*unctions (excludes macros).
+;;
+;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+;; already links to the manual, if a function is referenced there.
+(global-set-key (kbd "C-h F") #'helpful-function)
+
+;; Look up *C*ommands.
+;;
+;; By default, C-h C is bound to describe `describe-coding-system'. I
+;; don't find this very useful, but it's frequently useful to only
+;; look at interactive functions.
+(global-set-key (kbd "C-h C") #'helpful-command)
 (setq electric-indent-mode t)
 (load-theme 'wheatgrass t)
 (setq sentence-end-double-space nil)
