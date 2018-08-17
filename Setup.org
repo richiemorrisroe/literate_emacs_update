@@ -111,6 +111,7 @@ method of managing this
 		 :ensure t
 		 :config
       (global-flycheck-mode 1))
+
   (use-package tex 
     :ensure auctex
     ;; :config
@@ -341,7 +342,7 @@ We need to setup git before magit will work properly.
      (sql . t)
      (python . t)
      (latex . t)
-     ;; (sh . t)
+     (shell . t)
      (java . t)
      (C . t)
      (lisp . t)

@@ -5,7 +5,7 @@
      (sql . t)
      (python . t)
      (latex . t)
-     ;; (sh . t)
+     (shell . t)
      (java . t)
      (C . t)
      (lisp . t)

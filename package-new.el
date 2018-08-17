@@ -24,6 +24,7 @@
 		 :ensure t
 		 :config
       (global-flycheck-mode 1))
+
   (use-package tex 
     :ensure auctex
     ;; :config
