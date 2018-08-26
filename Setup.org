@@ -449,8 +449,24 @@ First, allow org to do it's thing.
 
 #+RESULTS:
 : org-redisplay-inline-images
+*** Lisp Hacking!
 
+#+BEGIN_SRC elisp
+(setq buf "/home/richie/Dropbox/Thesis/func.R")
+(defun rm-formatr (buf)
+  "Format given buffer with formatR"
+  ;; (interactive "bBuffer to format")
+  ;; (ess-r-check-install-package "formatR")
+  ;; (ess-eval-linewise (format "formatR::tidy_source(\"%s\")" buf))
+  (ess-command (format "formatR::tidy_source(\"%s\")" buf) )
+  )
+(rm-formatr "func.R")
 
+#+END_SRC
+
+- if I set the buf variable it works
+- ess-command has an outbuf parameter to store the results
+- can theoretically diff this
 ** Power Stuff
 
 #+BEGIN_SRC sh
