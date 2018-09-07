@@ -1,3 +1,4 @@
+(setq inhibit-startup-screen t)
 (setq
    backup-by-copying t      ; don't clobber symlinks
    backup-directory-alist

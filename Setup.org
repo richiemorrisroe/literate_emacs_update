@@ -194,6 +194,7 @@ This is my most controversial keyboard change. I learned to live with it, but fe
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle setup-editing.el
+(setq inhibit-startup-screen t)
 (setq
    backup-by-copying t      ; don't clobber symlinks
    backup-directory-alist
