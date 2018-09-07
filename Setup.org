@@ -378,7 +378,8 @@ We need to setup git before magit will work properly.
 First, allow org to do it's thing.
 
 #+BEGIN_SRC elisp :tangle setup-editing.el
-  (add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
+(global-set-key (kbd "C-x m") 'execute-extended-command)
+(add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
   (setq debug-on-error t)
   (setq inferior-lisp-program "sbcl")
   (setq-default indent-tabs-mode nil)
@@ -597,6 +598,13 @@ The transition has caused me some difficulty.
 #+END_SRC
 Otherwise, CUDA is unavailable.
 
+- This happened again, this time with gcc6-7
+
+- hopefully the same approach applies
+
+#+BEGIN_SRC sh
+
+#+END_SRC
 
 
 *** Torch (Lua)
@@ -692,3 +700,12 @@ Useful for inspecting R objects.
 Super useful for time series
 
  $A = \pi*r^{2}$
+
+** Bashrc
+
+#+BEGIN_SRC sh
+export PATH=/home/richie/anaconda3/bin:$PATH:
+alias tp="ping 8.8.8.8"
+#+END_SRC
+
+- need to figure out how to append to an existing file
