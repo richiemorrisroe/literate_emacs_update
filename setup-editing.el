@@ -47,7 +47,8 @@
     (setq auto-mode-alist (cons '("\\.mms" . mmix-mode)
                                       auto-mode-alist))
 
-  (add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
+(global-set-key (kbd "C-x m") 'execute-extended-command)
+(add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
   (setq debug-on-error t)
   (setq inferior-lisp-program "sbcl")
   (setq-default indent-tabs-mode nil)

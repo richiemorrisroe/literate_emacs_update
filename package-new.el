@@ -44,3 +44,7 @@
 (use-package ess)
 (use-package helpful
   :ensure t)
+(use-package helm
+  :ensure t
+  :config
+  (require 'helm-config))
