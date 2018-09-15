@@ -25,3 +25,6 @@
   sudo apt-get install whois
   sudo apt-get install nvidia-cuda-toolkit
   sudo apt install clang llvm cmake
+
+  sudo apt-get install apt-file
+  sudo apt-file update
