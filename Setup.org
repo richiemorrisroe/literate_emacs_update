@@ -653,7 +653,7 @@ And I couldn't get it to work :(
 - this is pretty easy, but I don't have it done
 ** Missing Libraries
 
-#+BEGIN_SRC sh :session :eval maybe
+#+BEGIN_SRC sh :tangle setup.sh
   sudo apt-get install apt-file
   sudo apt-file update
 #+END_SRC
@@ -682,7 +682,7 @@ install.packages(c("tidyverse", "forecast", "modelr", "pryr", "magrittr", "glmne
 install.packages(c("lintr", "h2o", "sparklyr", "xgboost"))
 #+END_SRC
 
-Install the essentials of the Hadleyverse.
+Install the essentials of the tidyverse.
 
 #+BEGIN_SRC R :session :eval maybe
 #+END_SRC
