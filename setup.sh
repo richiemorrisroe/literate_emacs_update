@@ -7,7 +7,7 @@
   ##due to bug, currently gnome-tweak-tool needed
   sudo apt-get install gnome-tweak-tool
   sudo apt-get build-dep emacs25
-  sudo apt-get install r-base-core r-base-dev r-doc python-pandas python-numpy python-matplotlib python-pip
+  sudo apt-get install r-base-core r-base-dev r-doc 
   sudo apt-get install gawk
   sudo apt-get install lamp-server
   ##graphics really shit on 14.04 Bumblebee
@@ -15,9 +15,6 @@
   sudo apt-get install exfat-fuse exfat-utils
   sudo apt-get install mysql-server mysql-client
   sudo apt-get install git
-  sudo apt-get install ipython
-  sudo apt-get install python-pandas
-  sudo apt-get install python-sklearn
   sudo apt-get install lm-sensors
   sudo add-apt-repository ppa:linrunner/tlp
   sudo apt-get update
@@ -25,6 +22,7 @@
   sudo apt-get install whois
   sudo apt-get install nvidia-cuda-toolkit
   sudo apt install clang llvm cmake
+  sudo apt install texlive-latex-base
 
   sudo apt-get install apt-file
   sudo apt-file update
