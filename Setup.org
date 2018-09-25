@@ -330,7 +330,7 @@ We need to setup git before magit will work properly.
   sudo apt-get install whois
   sudo apt-get install nvidia-cuda-toolkit
   sudo apt install clang llvm cmake
-  sudo apt install texlive-latex-base
+  sudo apt install texlive-latex-base texlive-latex-recommended 
 #+END_SRC
 
 #+RESULTS:
