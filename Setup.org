@@ -330,7 +330,7 @@ We need to setup git before magit will work properly.
   sudo apt-get install whois
   sudo apt-get install nvidia-cuda-toolkit
   sudo apt install clang llvm cmake
-  sudo apt install texlive-latex-base texlive-latex-recommended 
+  sudo apt install texlive-latex-base texlive-latex-recommended texlive-fonts-recommended
 #+END_SRC
 
 #+RESULTS:
@@ -456,14 +456,14 @@ First, allow org to do it's thing.
 *** Lisp Hacking!
 
 #+BEGIN_SRC elisp
+(defvar file (buffer-file-name))
 (setq buf "/home/richie/Dropbox/Thesis/func.R")
 (defun rm-formatr (buf)
   "Format given buffer with formatR"
-  ;; (interactive "bBuffer to format")
-  ;; (ess-r-check-install-package "formatR")
-  ;; (ess-eval-linewise (format "formatR::tidy_source(\"%s\")" buf))
-  (ess-command (format "formatR::tidy_source(\"%s\")" buf) )
-  )
+  (interactive "bchoose buffer:")
+  (let file (buffer-file-name buf))
+       (ess-command (format "formatR::tidy_source(\"%s\")" file) buf))
+
 (rm-formatr "func.R")
 
 #+END_SRC
