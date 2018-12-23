@@ -1,3 +1,4 @@
+
 (setq exec-path (append  '("~/anaconda3/bin") exec-path))
 (when (executable-find "ipython")
   (setq

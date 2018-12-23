@@ -1,3 +1,4 @@
+
   (add-hook 'Rnw-mode-hook
             (lambda ()
               (add-to-list 'TeX-command-list

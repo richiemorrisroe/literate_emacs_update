@@ -1,3 +1,4 @@
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((R . t)
@@ -5,7 +6,7 @@
      (sql . t)
      (python . t)
      (latex . t)
-     (shell . t)
+     (sh . t)
      (java . t)
      (C . t)
      (lisp . t)

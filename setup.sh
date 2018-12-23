@@ -1,3 +1,4 @@
+
   sudo apt install git
   git config --global user.email "richie.morrisroe@gmail.com"
 
@@ -22,7 +23,7 @@
   sudo apt-get install whois
   sudo apt-get install nvidia-cuda-toolkit
   sudo apt install clang llvm cmake
-  sudo apt install texlive-latex-base
+  sudo apt install texlive-latex-base texlive-latex-recommended texlive-fonts-recommended
 
   sudo apt-get install apt-file
   sudo apt-file update

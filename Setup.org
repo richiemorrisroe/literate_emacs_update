@@ -345,7 +345,7 @@ We need to setup git before magit will work properly.
      (sql . t)
      (python . t)
      (latex . t)
-     (shell . t)
+     (sh . t)
      (java . t)
      (C . t)
      (lisp . t)
@@ -698,7 +698,7 @@ Get apt-file, so that we can search for missing libraries throughout this proces
   update.packages()
 install.packages(c("ggplot2", "dplyr", "lubridate", "tidyr", "psych", "caret", "devtools", "broom"))
 install.packages(c("tidyverse", "forecast", "modelr", "pryr", "magrittr", "glmnet", "randomForest", "lintr", "xtable", "testthat"))
-install.packages(c("lintr", "h2o", "sparklyr", "xgboost"))
+install.packages(c("lintr", "h2o", "sparklyr", "xgboost", "rstan", "rstanarm"))
 #+END_SRC
 
 Install the essentials of the tidyverse.
@@ -732,3 +732,4 @@ alias tp="ping 8.8.8.8"
 #+END_SRC
 
 - need to figure out how to append to an existing file
+- this is easy, it's just >> (double arrow)
