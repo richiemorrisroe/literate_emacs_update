@@ -32,14 +32,14 @@ wget https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd6
 Seperate out the sudo parts, to prevent breakages.
 ***  Package/Settings Configuration
 #+BEGIN_SRC elisp :results none :tangle .emacs
-    ;; (load "~/Dropbox/personal-emacs/packages.el")
-    (load "~/Dropbox/personal-emacs/package-new.el")
-    (load "~/Dropbox/personal-emacs/keybindings.el")
-    (load "~/Dropbox/personal-emacs/cpp.el")
-    (load "~/Dropbox/personal-emacs/setup-editing.el")
-    (load "~/Dropbox/personal-emacs/ess.el")
-    (load "~/Dropbox/personal-emacs/latex-ess.el")
-    (load "~/Dropbox/personal-emacs/org-setup.el")
+    ;; (load "~/Dropbox/literate_emacs_update/packages.el")
+    (load "~/Dropbox/literate_emacs_update/package-new.el")
+    (load "~/Dropbox/literate_emacs_update/keybindings.el")
+    (load "~/Dropbox/literate_emacs_update/cpp.el")
+    (load "~/Dropbox/literate_emacs_update/setup-editing.el")
+    (load "~/Dropbox/literate_emacs_update/ess.el")
+    (load "~/Dropbox/literate_emacs_update/latex-ess.el")
+    (load "~/Dropbox/literate_emacs_update/org-setup.el")
 (load "~/Dropbox/personal-emacs/python.el")
 (load "~/Dropbox/personal-emacs/tramp.el")
   ;;default anaconda path after install
