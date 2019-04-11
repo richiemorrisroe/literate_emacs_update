@@ -1,9 +1,9 @@
 
 (setq exec-path (append  '("~/anaconda3/bin") exec-path))
-(when (executable-find "ipython")
+(when (executable-find "jupyter")
   (setq
-   python-shell-interpreter "ipython3"
-   python-shell-interpreter-args "--simple-prompt -i"
+   python-shell-interpreter "jupyter"
+   python-shell-interpreter-args "console --simple-prompt"
    python-shell-prompt-regexp "In \\[[0-9]+\\]: "
    python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
    python-shell-completion-setup-code
