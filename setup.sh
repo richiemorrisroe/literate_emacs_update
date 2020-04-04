@@ -1,4 +1,3 @@
-
   sudo apt install git
   git config --global user.email "richie.morrisroe@gmail.com"
 

@@ -1,4 +1,3 @@
-
   (global-set-key "\C-cg" 'magit-status)
 (global-set-key "\C-co" 'browse-url-at-point)
   (global-set-key "\C-cm" 'man)
