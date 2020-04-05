@@ -56,7 +56,6 @@
   (setq synonyms-cache-file  "~/mythesaurus/cache")
   (show-paren-mode 1);;always show bracket highlighting
   (global-linum-mode 1);;always show line numbers
-  (global-visual-line-mode 1) ;;always wrap words visually
   (global-font-lock-mode 1)
   (transient-mark-mode t) ;;turn on transient mark mode, must have turned it off by accident.
   (setq x-select-enable-clipboard t) ;; enable clipboard in and out of emacs
