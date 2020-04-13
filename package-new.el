@@ -1,4 +1,4 @@
-(require 'package)
+  (require 'package)
   (setq package-enable-at-startup nil)
   (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -139,6 +139,7 @@
 
 (setq gc-cons-threshold 400000000)
 (setq read-process-output-max (* 1024 1024)) 
+(setq lsp-response-timeout 20)
 (use-package lsp-python-ms
   :ensure t
   :hook (python-mode . (lambda ()

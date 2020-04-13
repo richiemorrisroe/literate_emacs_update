@@ -1,12 +1,12 @@
 (setq load-path (cons default-directory load-path))
-(load "package-new.el")
-(load "keybindings.el")
-(load "cpp.el")
-(load "setup-editing.el")
-(load "ess.el")
-(load "latex-ess.el")
-(load "org-setup.el")
+    (load "package-new.el")
+    (load "keybindings.el")
+    (load "cpp.el")
+    (load "setup-editing.el")
+    (load "ess.el")
+    (load "latex-ess.el")
+    (load "org-setup.el")
 (load "python.el")
 (load "tramp.el")
-  ;;default anaconda path after install
-
+;need to think of a better way of handling conda paths
+  ;; (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path))

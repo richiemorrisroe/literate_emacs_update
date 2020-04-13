@@ -42,8 +42,8 @@ Seperate out the sudo parts, to prevent breakages.
     (load "org-setup.el")
 (load "python.el")
 (load "tramp.el")
-  ;;default anaconda path after install
-  (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path))
+;need to think of a better way of handling conda paths
+  ;; (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path)) 
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none 
@@ -229,6 +229,7 @@ method of managing this
 
 (setq gc-cons-threshold 400000000)
 (setq read-process-output-max (* 1024 1024)) 
+(setq lsp-response-timeout 20)
 (use-package lsp-python-ms
   :ensure t
   :hook (python-mode . (lambda ()
