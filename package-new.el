@@ -1,31 +1,48 @@
-  (require 'package)
+(setq package-list '(use-package
+		       diminish
+		       ))
+  ;;taken from http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
+  (package-initialize)
+
+  (unless package-archive-contents
+    (package-refresh-contents))
+
+  (dolist (package package-list)
+    (unless (package-installed-p package)
+      (package-install package)))
+
+(require 'package)
   (setq package-enable-at-startup nil)
-  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
-  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
-  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+  ;; (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
       (package-initialize)
 
       (unless (package-installed-p 'use-package)
-        (package-refresh-contents)
-        (package-install 'use-package))
+	(package-refresh-contents)
+	(package-install 'use-package))
+
+	(unless (package-installed-p 'diminish)
+	(package-refresh-contents)
+	(package-install 'diminish))
 
       (eval-when-compile
-        (require 'use-package))
+	(require 'use-package))
       (require 'diminish)
       (require 'bind-key)
-      (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
-                                   ("gnu" . "https://elpa.gnu.org/packages/")
-                                   ("marmalade" . "https://marmalade-repo.org/packages/")
-                                   ("org" . "https://orgmode.org/elpa/")
-                                   ("melpa-stable" . "https://stable.melpa.org/packages/")
-                                   ))
-      (use-package magit :ensure t)
+      (setq package-archives '(("elpa" . "http://tromey.com/elpa/")
+				   ("gnu" . "http://elpa.gnu.org/packages/")
+				   ("marmalade" . "http://marmalade-repo.org/packages/")
+				   ("org" . "http://orgmode.org/elpa/")
+				   ("melpa" . "http://melpa.org/packages/")
+				   ))
+
       (use-package flycheck
-                   :ensure t
-                   :config
-        (global-flycheck-mode 1))
+		   :ensure t
+		   :config
+	(global-flycheck-mode 1))
 
     (use-package tex 
       :ensure auctex
@@ -35,14 +52,14 @@
       ;; (setq TeX-parse-self t))  
     )
       (use-package elpy
-                   :ensure t
-                   :init
-                   (elpy-enable))
+		   :ensure t
+
+		   )
       (use-package smartparens
-                   :ensure t
-                   :config
-                   (smartparens-global-mode t)
-                   (require 'smartparens-config))
+		   :ensure t
+		   :config
+		   (smartparens-global-mode t)
+		   (require 'smartparens-config))
   (use-package ess
     :ensure t)
   (use-package helpful
@@ -56,7 +73,7 @@
 
 
 ;; Add melpa to your packages repositories
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
 (package-initialize)
 
@@ -109,14 +126,14 @@
 
 ;; Add company-lsp backend for metals
 (use-package company-lsp)
-(setq lsp-keymap-prefix "s-l")
+(setq lsp-keymap-prefix "c-l")
 
 (use-package lsp-mode
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (python-mode . lsp)
-         (R-mode . lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
+	 (python-mode . lsp)
+	 (R-mode . lsp)
+	 ;; if you want which-key integration
+	 (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
 ;; optionally
@@ -139,12 +156,12 @@
 
 (setq gc-cons-threshold 400000000)
 (setq read-process-output-max (* 1024 1024)) 
-(setq lsp-response-timeout 20)
+(setq lsp-response-timeout 60)
 (use-package lsp-python-ms
   :ensure t
   :hook (python-mode . (lambda ()
-                          (require 'lsp-python-ms)
-                          (lsp))))
+			  (require 'lsp-python-ms)
+			  (lsp))))
 
 (setq company-minimum-prefix-length 1
       company-idle-delay 0.0)

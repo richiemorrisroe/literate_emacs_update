@@ -1,3 +1,3 @@
-  (use-package google-this
-    :config
-    (google-this-mode 1))
+(use-package google-this
+  :config
+  (google-this-mode 1))

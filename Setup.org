@@ -1,7 +1,8 @@
 #+TITLE: Setup Stuff
 #+OPTIONS: toc nil
 
-This file documents some of the crazy things that I have to do n order to have all of my dependencies available.
+This file documents some of the crazy things that I have to do n order
+to have all of my dependencies available.
 
 * Overall
 ** Emacs stuff 
@@ -105,156 +106,160 @@ method of managing this
 #+RESULTS:
 
 #+BEGIN_SRC elisp :tangle package-new.el
+    (require 'package)
+    (setq package-enable-at-startup nil)
+    (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+    (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+    (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+    ;; (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+	(package-initialize)
+
+	(unless (package-installed-p 'use-package)
+	  (package-refresh-contents)
+	  (package-install 'use-package))
+
+	  (unless (package-installed-p 'diminish)
+	  (package-refresh-contents)
+	  (package-install 'diminish))
+
+	(eval-when-compile
+	  (require 'use-package))
+	(require 'diminish)
+	(require 'bind-key)
+	(setq package-archives '(("elpa" . "http://tromey.com/elpa/")
+				     ("gnu" . "http://elpa.gnu.org/packages/")
+				     ("marmalade" . "http://marmalade-repo.org/packages/")
+				     ("org" . "http://orgmode.org/elpa/")
+				     ("melpa" . "http://melpa.org/packages/")
+				     ))
+
+	(use-package flycheck
+		     :ensure t
+		     :config
+	  (global-flycheck-mode 1))
+
+      (use-package tex 
+	:ensure auctex
+	;; :config
+	;; ((setq TeX-auto-save t)
+
+	;; (setq TeX-parse-self t))  
+      )
+	(use-package elpy
+		     :ensure t
+
+		     )
+	(use-package smartparens
+		     :ensure t
+		     :config
+		     (smartparens-global-mode t)
+		     (require 'smartparens-config))
+    (use-package ess
+      :ensure t)
+    (use-package helpful
+      :ensure t)
+    (use-package helm
+      :ensure t
+      :config
+      (require 'helm-config))
   (require 'package)
-  (setq package-enable-at-startup nil)
-  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
-  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
-  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-      (package-initialize)
 
-      (unless (package-installed-p 'use-package)
-        (package-refresh-contents)
-        (package-install 'use-package))
 
-      (eval-when-compile
-        (require 'use-package))
-      (require 'diminish)
-      (require 'bind-key)
-      (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
-                                   ("gnu" . "https://elpa.gnu.org/packages/")
-                                   ("marmalade" . "https://marmalade-repo.org/packages/")
-                                   ("org" . "https://orgmode.org/elpa/")
-                                   ("melpa-stable" . "https://stable.melpa.org/packages/")
-                                   ))
-      (use-package magit :ensure t)
-      (use-package flycheck
-                   :ensure t
-                   :config
-        (global-flycheck-mode 1))
 
-    (use-package tex 
-      :ensure auctex
-      ;; :config
-      ;; ((setq TeX-auto-save t)
+  ;; Add melpa to your packages repositories
+  ;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
-      ;; (setq TeX-parse-self t))  
-    )
-      (use-package elpy
-                   :ensure t
-                   :init
-                   (elpy-enable))
-      (use-package smartparens
-                   :ensure t
-                   :config
-                   (smartparens-global-mode t)
-                   (require 'smartparens-config))
-  (use-package ess
-    :ensure t)
-  (use-package helpful
-    :ensure t)
-  (use-package helm
-    :ensure t
+  (package-initialize)
+
+  ;; Install use-package if not already installed
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (require 'use-package)
+
+  ;; Enable defer and ensure by default for use-package
+  ;; Keep auto-save/backup files separate from source code:  https://github.com/scalameta/metals/issues/1027
+  (setq use-package-always-defer t
+	use-package-always-ensure t
+	backup-directory-alist `((".*" . ,temporary-file-directory))
+	auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+  ;; Enable scala-mode and sbt-mode
+  (use-package scala-mode
+    :mode "\\.s\\(cala\\|bt\\)$")
+
+  (use-package sbt-mode
+    :commands sbt-start sbt-command
     :config
-    (require 'helm-config))
-(require 'package)
+    ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+    ;; allows using SPACE when in the minibuffer
+    (substitute-key-definition
+     'minibuffer-complete-word
+     'self-insert-command
+     minibuffer-local-completion-map)
+     ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
+     (setq sbt:program-options '("-Dsbt.supershell=false"))
+  )
 
+  ;; Enable nice rendering of diagnostics like compile errors.
+  (use-package flycheck
+    :init (global-flycheck-mode))
 
+  (use-package lsp-mode
+    ;; Optional - enable lsp-mode automatically in scala files
+    :hook (scala-mode . lsp)
+    :config (setq lsp-prefer-flymake nil))
 
-;; Add melpa to your packages repositories
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (use-package lsp-ui)
 
-(package-initialize)
+  ;; lsp-mode supports snippets, but in order for them to work you need to use yasnippet
+  ;; If you don't want to use snippets set lsp-enable-snippet to nil in your lsp-mode settings
+  ;;   to avoid odd behavior with snippets and indentation
+  (use-package yasnippet)
 
-;; Install use-package if not already installed
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+  ;; Add company-lsp backend for metals
+  (use-package company-lsp)
+  (setq lsp-keymap-prefix "c-l")
 
-(require 'use-package)
+  (use-package lsp-mode
+    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+	   (python-mode . lsp)
+	   (R-mode . lsp)
+	   ;; if you want which-key integration
+	   (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
 
-;; Enable defer and ensure by default for use-package
-;; Keep auto-save/backup files separate from source code:  https://github.com/scalameta/metals/issues/1027
-(setq use-package-always-defer t
-      use-package-always-ensure t
-      backup-directory-alist `((".*" . ,temporary-file-directory))
-      auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+  ;; optionally
+  (use-package lsp-ui :commands lsp-ui-mode)
+  (use-package company-lsp :commands company-lsp)
+  ;; if you are helm user
+  (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+  ;; if you are ivy user
+  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+  (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
-;; Enable scala-mode and sbt-mode
-(use-package scala-mode
-  :mode "\\.s\\(cala\\|bt\\)$")
+  ;; optionally if you want to use debugger
+  (use-package dap-mode)
+  ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
-(use-package sbt-mode
-  :commands sbt-start sbt-command
-  :config
-  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
-  ;; allows using SPACE when in the minibuffer
-  (substitute-key-definition
-   'minibuffer-complete-word
-   'self-insert-command
-   minibuffer-local-completion-map)
-   ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
-   (setq sbt:program-options '("-Dsbt.supershell=false"))
-)
+  ;; optional if you want which-key integration
+  (use-package which-key
+    :config
+    (which-key-mode))
 
-;; Enable nice rendering of diagnostics like compile errors.
-(use-package flycheck
-  :init (global-flycheck-mode))
+  (setq gc-cons-threshold 400000000)
+  (setq read-process-output-max (* 1024 1024)) 
+  (setq lsp-response-timeout 60)
+  (use-package lsp-python-ms
+    :ensure t
+    :hook (python-mode . (lambda ()
+			    (require 'lsp-python-ms)
+			    (lsp))))
 
-(use-package lsp-mode
-  ;; Optional - enable lsp-mode automatically in scala files
-  :hook (scala-mode . lsp)
-  :config (setq lsp-prefer-flymake nil))
-
-(use-package lsp-ui)
-
-;; lsp-mode supports snippets, but in order for them to work you need to use yasnippet
-;; If you don't want to use snippets set lsp-enable-snippet to nil in your lsp-mode settings
-;;   to avoid odd behavior with snippets and indentation
-(use-package yasnippet)
-
-;; Add company-lsp backend for metals
-(use-package company-lsp)
-(setq lsp-keymap-prefix "s-l")
-
-(use-package lsp-mode
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (python-mode . lsp)
-         (R-mode . lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
-
-;; optionally
-(use-package lsp-ui :commands lsp-ui-mode)
-(use-package company-lsp :commands company-lsp)
-;; if you are helm user
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-;; if you are ivy user
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-
-;; optionally if you want to use debugger
-(use-package dap-mode)
-;; (use-package dap-LANGUAGE) to load the dap adapter for your language
-
-;; optional if you want which-key integration
-(use-package which-key
-  :config
-  (which-key-mode))
-
-(setq gc-cons-threshold 400000000)
-(setq read-process-output-max (* 1024 1024)) 
-(setq lsp-response-timeout 20)
-(use-package lsp-python-ms
-  :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-python-ms)
-                          (lsp))))
-
-(setq company-minimum-prefix-length 1
-      company-idle-delay 0.0)
+  (setq company-minimum-prefix-length 1
+	company-idle-delay 0.0)
 #+END_SRC
 
 #+RESULTS:
@@ -370,7 +375,7 @@ This is my most controversial keyboard change. I learned to live with it, but fe
                                       auto-mode-alist))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp :tangle ess.el
+#+BEGIN_SRC emacs-lisp :tangle my-ess.el
     (setq ess-eldoc-show-on-symbol t)
   (setq ess-tab-complete-in-script t)
   ;; (add-to-list 'load-path "/usr/share/emacs/25.2/site-lisp/elpa/ess-18.10.2")
@@ -464,7 +469,7 @@ We need to setup git before magit will work properly.
 
 #+BEGIN_SRC elisp :tangle org-setup.el
   (org-babel-do-load-languages
-   'org-babel-load-languages
+  'org-babel-load-languages
    '((R . t)
      (emacs-lisp . t)
      (sql . t)
@@ -506,29 +511,29 @@ We need to setup git before magit will work properly.
 First, allow org to do it's thing.
 
 #+BEGIN_SRC elisp :tangle setup-editing.el
-(global-set-key (kbd "C-x m") 'execute-extended-command)
-(add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
-  (setq debug-on-error t)
-  (setq inferior-lisp-program "sbcl")
-  (setq-default indent-tabs-mode nil)
-  (setq synonyms-file        "~/mythesaurus/")
-  (setq synonyms-cache-file  "~/mythesaurus/cache")
-  (show-paren-mode 1);;always show bracket highlighting
-  (global-linum-mode 1);;always show line numbers
-  (global-font-lock-mode 1)
-  (transient-mark-mode t) ;;turn on transient mark mode, must have turned it off by accident.
-  (setq x-select-enable-clipboard t) ;; enable clipboard in and out of emacs
-  (fset 'yes-or-no-p 'y-or-n-p) ;;allow y or n to stand for yes or no
-  (put 'erase-buffer 'disabled nil) ;;enable erase buffer command
-  (put 'set-goal-column 'disabled nil) ;;enable set goal column
-  ;; (load-theme 'wheatgrass t)
-  (setq tramp-default-method "ssh")
+  (global-set-key (kbd "C-x m") 'execute-extended-command)
+  (add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
+    (setq debug-on-error t)
+    (setq inferior-lisp-program "sbcl")
+    (setq-default indent-tabs-mode nil)
+    (setq synonyms-file        "~/mythesaurus/")
+    (setq synonyms-cache-file  "~/mythesaurus/cache")
+    (show-paren-mode 1);;always show bracket highlighting
+    (global-linum-mode 1);;always show line numbers
+    (global-font-lock-mode 1)
+    (transient-mark-mode t) ;;turn on transient mark mode, must have turned it off by accident.
+    (setq x-select-enable-clipboard t) ;; enable clipboard in and out of emacs
+    (fset 'yes-or-no-p 'y-or-n-p) ;;allow y or n to stand for yes or no
+    (put 'erase-buffer 'disabled nil) ;;enable erase buffer command
+    (put 'set-goal-column 'disabled nil) ;;enable set goal column
+    ;; (load-theme 'wheatgrass t)
+    (setq tramp-default-method "ssh")
 
-  (put 'upcase-region 'disabled nil)
-  (put 'downcase-region 'disabled nil)
-  (server-start)
-  (add-hook 'prog-mode-hook 'subword-mode)
-  (global-set-key "\C-cp" 'run-python)
+    (put 'upcase-region 'disabled nil)
+    (put 'downcase-region 'disabled nil)
+    (server-start)
+    (add-hook 'prog-mode-hook 'subword-mode)
+    (global-set-key "\C-cp" 'run-python)
 
 #+END_SRC
 
@@ -666,8 +671,8 @@ bash Anaconda-latest-Linux-x86_64.sh
 ;;    "';'.join(module_completion('''%s'''))\n"
 ;;    python-shell-completion-string-code
 ;;    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
-(setq python-shell-interpreter "pyspark")
-(setq python-shell-interpreter-args "")
+(setq python-shell-interpreter "jupyter")
+(setq python-shell-interpreter-args "console")
 
 (elpy-enable)
 #+END_SRC
