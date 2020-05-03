@@ -50,18 +50,12 @@ Seperate out the sudo parts, to prevent breakages.
   '("melpa-stable" . "https://stable.melpa.org/packages/"))
   ;; (add-to-list 'package-archives
   ;; '("melpa" . "https://melpa.org/packages/"))
+  (global-set-key "\C-cg" 'magit-status)
+  (global-set-key (kbd "C-x m") 'execute-extended-command)
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none :tangle .emacs
-  (load (file-truename "package-new.el"))
-  (load (file-truename "keybindings.el"))
-      (load (file-truename "cpp.el"))
-  (load (file-truename "setup-editing.el"))
-      (load (file-truename "ess.el"))
-      (load (file-truename "latex-ess.el"))
-  (load (file-truename "org-setup.el"))
-  (load (file-truename "python.el"))
-  (load (file-truename "tramp.el"))
+(load ( "~/Dropbox/literate_emacs_update/base-pkg.el"))
   ;need to think of a better way of handling conda paths
     ;; (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path)) 
 #+END_SRC
