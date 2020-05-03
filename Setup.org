@@ -52,6 +52,8 @@ Seperate out the sudo parts, to prevent breakages.
   ;; '("melpa" . "https://melpa.org/packages/"))
   (global-set-key "\C-cg" 'magit-status)
   (global-set-key (kbd "C-x m") 'execute-extended-command)
+    (use-package helpful
+      :ensure t)
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none :tangle keybindings.el
@@ -176,8 +178,7 @@ method of managing this
 		     (require 'smartparens-config))
     (use-package ess
       :ensure t)
-    (use-package helpful
-      :ensure t)
+
     (use-package helm
       :ensure t
       :config

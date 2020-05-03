@@ -62,8 +62,7 @@
 		   (require 'smartparens-config))
   (use-package ess
     :ensure t)
-  (use-package helpful
-    :ensure t)
+
   (use-package helm
     :ensure t
     :config

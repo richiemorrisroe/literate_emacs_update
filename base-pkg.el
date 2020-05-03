@@ -16,3 +16,5 @@
 ;; '("melpa" . "https://melpa.org/packages/"))
 (global-set-key "\C-cg" 'magit-status)
 (global-set-key (kbd "C-x m") 'execute-extended-command)
+  (use-package helpful
+    :ensure t)
