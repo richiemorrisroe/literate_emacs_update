@@ -31,55 +31,72 @@ wget https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd6
 #+END_SRC
 Seperate out the sudo parts, to prevent breakages.
 ***  Package/Settings Configuration
+
+#+BEGIN_SRC elisp :results none :tangle base-pkg.el
+	(unless (package-installed-p 'use-package)
+	  (package-refresh-contents)
+	  (package-install 'use-package))
+
+	  (unless (package-installed-p 'diminish)
+	  (package-refresh-contents)
+	  (package-install 'diminish))
+	(use-package magit :ensure t)
+    (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
+			     ("gnu" . "https://elpa.gnu.org/packages/")
+			     ("marmalade" . "https://marmalade-repo.org/packages/")))
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives
+  '("melpa-stable" . "https://stable.melpa.org/packages/"))
+  ;; (add-to-list 'package-archives
+  ;; '("melpa" . "https://melpa.org/packages/"))
+#+END_SRC
+
 #+BEGIN_SRC elisp :results none :tangle .emacs
-(setq load-path (cons default-directory load-path))
-    (load "package-new.el")
-    (load "keybindings.el")
-    (load "cpp.el")
-    (load "setup-editing.el")
-    (load "ess.el")
-    (load "latex-ess.el")
-    (load "org-setup.el")
-(load "python.el")
-(load "tramp.el")
-;need to think of a better way of handling conda paths
-  ;; (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path)) 
+  (load (file-truename "package-new.el"))
+  (load (file-truename "keybindings.el"))
+      (load (file-truename "cpp.el"))
+  (load (file-truename "setup-editing.el"))
+      (load (file-truename "ess.el"))
+      (load (file-truename "latex-ess.el"))
+  (load (file-truename "org-setup.el"))
+  (load (file-truename "python.el"))
+  (load (file-truename "tramp.el"))
+  ;need to think of a better way of handling conda paths
+    ;; (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path)) 
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none 
     (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
-                             ("gnu" . "https://elpa.gnu.org/packages/")
-                             ("marmalade" . "https://marmalade-repo.org/packages/")))
+			     ("gnu" . "https://elpa.gnu.org/packages/")
+			     ("marmalade" . "https://marmalade-repo.org/packages/")))
   (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
   (add-to-list 'package-archives
   '("melpa-stable" . "https://stable.melpa.org/packages/"))
-  (add-to-list 'package-archives
-  '("melpa" . "https://melpa.org/packages/"))
+  ;; (add-to-list 'package-archives
+  ;; '("melpa" . "https://melpa.org/packages/"))
 #+END_SRC
 First, setup the archives. Next, install a list of packages that I tend to use
 
 
 
-#+BEGIN_SRC elisp
-  (setq package-list '(auctex
-                       bash-completion
-                       flycheck
-                       magit
-                       use-package
-                       elpy
-                       smartparens))
-  ;;taken from http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
-  (package-initialize)
+#+BEGIN_SRC elisp :tangle package-new.el
+  (setq package-list '(use-package
+			 diminish
+			 ))
+    ;;taken from http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
+    (package-initialize)
 
-  (unless package-archive-contents
-    (package-refresh-contents))
+    (unless package-archive-contents
+      (package-refresh-contents))
 
-  (dolist (package package-list)
-    (unless (package-installed-p package)
-      (package-install package)))
+    (dolist (package package-list)
+      (unless (package-installed-p package)
+	(package-install package)))
 
 
 #+END_SRC
+
+#+RESULTS:
 
 I tend not to use this anymore, as use-package provides a far superior
 method of managing this
