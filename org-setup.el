@@ -19,5 +19,3 @@
   (setq org-edit-src-content-indentation 0)
   (setq org-src-tab-acts-natively t)
 (setq org-src-preserve-indentation t)
-; not idempotent, should probably check car exec-path first
-  (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path))

@@ -1,4 +1,5 @@
 ;;utility keybindings
+  (global-set-key (kbd "C-x m") 'execute-extended-command)
   (global-set-key "\C-co" 'browse-url-at-point)
   (global-set-key "\C-cm" 'man)
   (global-set-key "\C-xt" 'transpose-lines); keybinding to transpose lines

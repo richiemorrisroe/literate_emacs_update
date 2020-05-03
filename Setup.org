@@ -50,8 +50,7 @@ Seperate out the sudo parts, to prevent breakages.
   '("melpa-stable" . "https://stable.melpa.org/packages/"))
   ;; (add-to-list 'package-archives
   ;; '("melpa" . "https://melpa.org/packages/"))
-  (global-set-key "\C-cg" 'magit-status)
-  (global-set-key (kbd "C-x m") 'execute-extended-command)
+
     (use-package helpful
       :ensure t)
 (load-theme 'wheatgrass t)
@@ -59,6 +58,7 @@ Seperate out the sudo parts, to prevent breakages.
 
 #+BEGIN_SRC elisp :results none :tangle keybindings.el
     ;;utility keybindings
+    (global-set-key (kbd "C-x m") 'execute-extended-command)
     (global-set-key "\C-co" 'browse-url-at-point)
     (global-set-key "\C-cm" 'man)
     (global-set-key "\C-xt" 'transpose-lines); keybinding to transpose lines
@@ -82,11 +82,35 @@ Seperate out the sudo parts, to prevent breakages.
 - Keybindings are also pretty simple, so I should load
 them before anything else breaks
 
+#+BEGIN_SRC elisp :tangle org-setup.el
+  (org-babel-do-load-languages
+  'org-babel-load-languages
+   '((R . t)
+     (emacs-lisp . t)
+     (sql . t)
+     (python . t)
+     (latex . t)
+     (shell . t)
+     (java . t)
+     (C . t)
+     (lisp . t)
+     ;; (stan . t)
+     ))
+  (setq org-babel-confirm-evaluate nil)
+  (setq org-default-notes-file "~/Dropbox/Notes/notes.org")
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  (global-set-key "\C-ci" 'org-redisplay-inline-images)
+
+  (setq org-edit-src-content-indentation 0)
+  (setq org-src-tab-acts-natively t)
+(setq org-src-preserve-indentation t)
+#+END_SRC
+
+
+
 #+BEGIN_SRC elisp :results none :tangle .emacs
-(load ( "~/Dropbox/literate_emacs_update/base-pkg.el"))
-(load ( "~/Dropbox/literate_emacs_update/keybindings.el"))
-  ;need to think of a better way of handling conda paths
-    ;; (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path)) 
+(load  "~/Dropbox/literate_emacs_update/base-pkg.el")
+(load  "~/Dropbox/literate_emacs_update/keybindings.el")
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none 
@@ -460,34 +484,8 @@ We need to setup git before magit will work properly.
 
 
 
-#+BEGIN_SRC elisp :tangle org-setup.el
-  (org-babel-do-load-languages
-  'org-babel-load-languages
-   '((R . t)
-     (emacs-lisp . t)
-     (sql . t)
-     (python . t)
-     (latex . t)
-     (shell . t)
-     (java . t)
-     (C . t)
-     (lisp . t)
-     ;; (stan . t)
-     ))
-  (setq org-babel-confirm-evaluate nil)
-  (setq org-default-notes-file "~/Dropbox/Notes/notes.org")
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-  (global-set-key "\C-ci" 'org-redisplay-inline-images)
 
-  (setq org-edit-src-content-indentation 0)
-  (setq org-src-tab-acts-natively t)
-(setq org-src-preserve-indentation t)
-; not idempotent, should probably check car exec-path first
-  (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path))
-#+END_SRC
 
-#+RESULTS:
-| ~/anaconda3/bin | /home/richie/torch/install/bin | /home/richie/bin | /usr/local/sbin | /usr/local/bin | /usr/sbin | /usr/bin | /sbin | /bin | /usr/games | /usr/local/games | /snap/bin | /usr/local/libexec/emacs/27.0.50/x86_64-pc-linux-gnu | /home/richie/anaconda3/bin/ | ~/.local/bin/ | /sw/bin | /home/richie/anaconda3/bin/ | ~/.local/bin/ |
 
 #+BEGIN_SRC emacs-lisp :tangle google.el
   (use-package google-this
