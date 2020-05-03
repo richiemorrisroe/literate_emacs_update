@@ -109,8 +109,10 @@ them before anything else breaks
 
 
 #+BEGIN_SRC elisp :results none :tangle .emacs
-(load  "~/Dropbox/literate_emacs_update/base-pkg.el")
-(load  "~/Dropbox/literate_emacs_update/keybindings.el")
+  (require 'package)
+  (package-initialize)
+  (load  "~/Dropbox/literate_emacs_update/base-pkg.el")
+  (load  "~/Dropbox/literate_emacs_update/keybindings.el")
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none 
