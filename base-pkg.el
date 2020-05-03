@@ -1,6 +1,4 @@
-(require 'package)
-(package-initialize)
-	(unless (package-installed-p 'use-package)
+(unless (package-installed-p 'use-package)
 	  (package-refresh-contents)
 	  (package-install 'use-package))
 
@@ -20,5 +18,3 @@
     (use-package helpful
       :ensure t)
 (load-theme 'wheatgrass t)
-    (use-package ess
-      :ensure t)
