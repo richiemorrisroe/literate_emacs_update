@@ -34,6 +34,8 @@ Seperate out the sudo parts, to prevent breakages.
 ***  Package/Settings Configuration
 
 #+BEGIN_SRC elisp :results none :tangle base-pkg.el
+(require 'package)
+(package-initialize)
 	(unless (package-installed-p 'use-package)
 	  (package-refresh-contents)
 	  (package-install 'use-package))
@@ -54,6 +56,8 @@ Seperate out the sudo parts, to prevent breakages.
     (use-package helpful
       :ensure t)
 (load-theme 'wheatgrass t)
+    (use-package ess
+      :ensure t)
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none :tangle keybindings.el
