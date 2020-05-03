@@ -54,6 +54,7 @@ Seperate out the sudo parts, to prevent breakages.
   (global-set-key (kbd "C-x m") 'execute-extended-command)
     (use-package helpful
       :ensure t)
+(load-theme 'wheatgrass t)
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none :tangle keybindings.el
