@@ -1,11 +1,3 @@
-(load (file-truename "package-new.el"))
-(load (file-truename "keybindings.el"))
-    (load (file-truename "cpp.el"))
-(load (file-truename "setup-editing.el"))
-    (load (file-truename "ess.el"))
-    (load (file-truename "latex-ess.el"))
-(load (file-truename "org-setup.el"))
-(load (file-truename "python.el"))
-(load (file-truename "tramp.el"))
-;need to think of a better way of handling conda paths
-  ;; (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path))
+(load ( "~/Dropbox/literate_emacs_update/base-pkg.el"))
+  ;need to think of a better way of handling conda paths
+    ;; (setq exec-path (cons "/home/richie/anaconda3/bin" exec-path))
