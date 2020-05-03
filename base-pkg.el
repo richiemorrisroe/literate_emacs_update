@@ -18,3 +18,7 @@
     (use-package helpful
       :ensure t)
 (load-theme 'wheatgrass t)
+(use-package elpy
+:ensure t
+
+)

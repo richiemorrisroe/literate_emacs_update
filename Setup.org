@@ -54,6 +54,11 @@ Seperate out the sudo parts, to prevent breakages.
     (use-package helpful
       :ensure t)
 (load-theme 'wheatgrass t)
+(use-package elpy
+:ensure t
+
+)
+
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none :tangle keybindings.el
@@ -195,10 +200,6 @@ method of managing this
 
 	;; (setq TeX-parse-self t))  
       )
-	(use-package elpy
-		     :ensure t
-
-		     )
 	(use-package smartparens
 		     :ensure t
 		     :config

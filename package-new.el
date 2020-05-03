@@ -51,10 +51,6 @@
 
       ;; (setq TeX-parse-self t))  
     )
-      (use-package elpy
-		   :ensure t
-
-		   )
       (use-package smartparens
 		   :ensure t
 		   :config
