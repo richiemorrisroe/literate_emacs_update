@@ -2,3 +2,6 @@
 (package-initialize)
 (load  "~/Dropbox/literate_emacs_update/base-pkg.el")
 (load  "~/Dropbox/literate_emacs_update/keybindings.el")
+(load  "~/Dropbox/literate_emacs_update/org-setup.el")
+(load  "~/Dropbox/literate_emacs_update/settings.el")
+(load  "~/Dropbox/literate_emacs_update/lsp.el")

@@ -110,7 +110,7 @@
 (use-package lsp-mode
   ;; Optional - enable lsp-mode automatically in scala files
   :hook (scala-mode . lsp)
-  :config (setq lsp-prefer-flymake nil))
+  )
 
 (use-package lsp-ui)
 
@@ -121,14 +121,15 @@
 
 ;; Add company-lsp backend for metals
 (use-package company-lsp)
-(setq lsp-keymap-prefix "c-l")
+(setq lsp-keymap-prefix "\C-l")
 
 (use-package lsp-mode
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
 	 (python-mode . lsp)
-	 (R-mode . lsp)
+	 (ess-mode . lsp)
 	 ;; if you want which-key integration
 	 (lsp-mode . lsp-enable-which-key-integration))
+         :config (setq lsp-prefer-flymake nil)
   :commands lsp)
 
 ;; optionally
