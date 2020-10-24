@@ -5,3 +5,4 @@
 (load  "~/Dropbox/literate_emacs_update/org-setup.el")
 (load  "~/Dropbox/literate_emacs_update/settings.el")
 (load  "~/Dropbox/literate_emacs_update/lsp.el")
+(load  "~/Dropbox/literate_emacs_update/python-newer.el")

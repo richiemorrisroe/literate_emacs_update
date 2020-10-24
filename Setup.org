@@ -34,34 +34,34 @@ Seperate out the sudo parts, to prevent breakages.
 ***  Package/Settings Configuration
 
 #+BEGIN_SRC elisp :results none :tangle base-pkg.el
-          (unless (package-installed-p 'use-package)
-            (package-refresh-contents)
-            (package-install 'use-package))
+            (unless (package-installed-p 'use-package)
+              (package-refresh-contents)
+              (package-install 'use-package))
 
-            (unless (package-installed-p 'diminish)
-            (package-refresh-contents)
-            (package-install 'diminish))
-          (use-package magit :ensure t)
-      (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
-                               ("gnu" . "https://elpa.gnu.org/packages/")
-                               ("marmalade" . "https://marmalade-repo.org/packages/")))
-    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-    (add-to-list 'package-archives
-    '("melpa-stable" . "https://stable.melpa.org/packages/"))
-    (add-to-list 'package-archives
-    '("melpa" . "https://melpa.org/packages/"))
+              (unless (package-installed-p 'diminish)
+              (package-refresh-contents)
+              (package-install 'diminish))
 
-      (use-package helpful
-        :ensure t)
-  (load-theme 'wheatgrass t)
-  (use-package elpy
-  :ensure t
+        (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
+                                 ("gnu" . "https://elpa.gnu.org/packages/")))
+      (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+      (add-to-list 'package-archives
+      '("melpa-stable" . "https://stable.melpa.org/packages/"))
+      (add-to-list 'package-archives
+      '("melpa" . "https://melpa.org/packages/"))
+  (use-package magit :ensure t)
+  (use-package ess :ensure t)
+  (use-package helpful
+          :ensure t)
+    (load-theme 'wheatgrass t)
+    (use-package elpy
+    :ensure t
 
-  )
-(setq use-package-always-defer t
-	use-package-always-ensure t
-	backup-directory-alist `((".*" . ,temporary-file-directory))
-	auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+    )
+  (setq use-package-always-defer t
+          use-package-always-ensure t
+          backup-directory-alist `((".*" . ,temporary-file-directory))
+          auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none :tangle keybindings.el
@@ -85,6 +85,30 @@ Seperate out the sudo parts, to prevent breakages.
     (global-set-key "\C-ca" 'org-agenda)
   (global-set-key "\C-cb" 'org-iswitchb)
   (global-set-key "\C-ci" 'org-redisplay-inline-images)
+;; Note that the built-in `describe-function' includes both functions
+;; and macros. `helpful-function' is functions only, so we provide
+;; `helpful-callable' as a drop-in replacement.
+(global-set-key (kbd "C-h f") #'helpful-callable)
+
+(global-set-key (kbd "C-h v") #'helpful-variable)
+(global-set-key (kbd "C-h k") #'helpful-key)
+
+;; Lookup the current symbol at point. C-c C-d is a common keybinding
+;; for this in lisp modes.
+(global-set-key (kbd "C-c C-d") #'helpful-at-point)
+
+;; Look up *F*unctions (excludes macros).
+;;
+;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+;; already links to the manual, if a function is referenced there.
+(global-set-key (kbd "C-h F") #'helpful-function)
+
+;; Look up *C*ommands.
+;;
+;; By default, C-h C is bound to describe `describe-coding-system'. I
+;; don't find this very useful, but it's frequently useful to only
+;; look at interactive functions.
+(global-set-key (kbd "C-h C") #'helpful-command)
 #+END_SRC
 
 - Keybindings are also pretty simple, so I should load
@@ -129,6 +153,11 @@ them before anything else breaks
       (put 'downcase-region 'disabled nil)
       (server-start)
 #+END_SRC
+
+#+begin_src elisp :tangle python-newer.el
+(setq python-shell-interpreter "ipython"
+        python-shell-interpreter-args "--simple-prompt -i")
+#+end_src
 
 
 #+BEGIN_SRC elisp :tangle lsp.el
@@ -180,6 +209,7 @@ them before anything else breaks
   (load  "~/Dropbox/literate_emacs_update/org-setup.el")
   (load  "~/Dropbox/literate_emacs_update/settings.el")
   (load  "~/Dropbox/literate_emacs_update/lsp.el")
+  (load  "~/Dropbox/literate_emacs_update/python-newer.el")
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none 
@@ -253,7 +283,7 @@ method of managing this
 	(use-package flycheck
 		     :ensure t
 		     :config
-	  (global-flycheck-mode 1))
+	  (add-hook 'after-init-hook #'global-flycheck-mode))
 
       (use-package tex 
 	:ensure auctex
@@ -329,7 +359,7 @@ method of managing this
 
   ;; Add company-lsp backend for metals
   (use-package company-lsp)
-  (setq lsp-keymap-prefix "\C-l")
+  (setq lsp-keymap-prefix "\C-xl")
 
   (use-package lsp-mode
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)

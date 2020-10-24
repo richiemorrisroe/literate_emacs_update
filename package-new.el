@@ -42,7 +42,7 @@
       (use-package flycheck
 		   :ensure t
 		   :config
-	(global-flycheck-mode 1))
+	(add-hook 'after-init-hook #'global-flycheck-mode))
 
     (use-package tex 
       :ensure auctex
@@ -81,10 +81,7 @@
 
 ;; Enable defer and ensure by default for use-package
 ;; Keep auto-save/backup files separate from source code:  https://github.com/scalameta/metals/issues/1027
-(setq use-package-always-defer t
-      use-package-always-ensure t
-      backup-directory-alist `((".*" . ,temporary-file-directory))
-      auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
 
 ;; Enable scala-mode and sbt-mode
 (use-package scala-mode
@@ -121,7 +118,7 @@
 
 ;; Add company-lsp backend for metals
 (use-package company-lsp)
-(setq lsp-keymap-prefix "\C-l")
+(setq lsp-keymap-prefix "\C-xl")
 
 (use-package lsp-mode
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
