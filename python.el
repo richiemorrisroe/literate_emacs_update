@@ -11,7 +11,7 @@
 ;;    "';'.join(module_completion('''%s'''))\n"
 ;;    python-shell-completion-string-code
 ;;    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
-(setq python-shell-interpreter "pyspark")
-(setq python-shell-interpreter-args "")
+(setq python-shell-interpreter "ipython")
+(setq python-shell-interpreter-args "-i --simple-prompt")
 
 (elpy-enable)
