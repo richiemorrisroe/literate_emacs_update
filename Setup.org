@@ -198,7 +198,7 @@ method of managing this
 
 ;; Add company-lsp backend for metals
 (use-package company-lsp)
-(setq lsp-keymap-prefix "s-l")
+(setq lsp-keymap-prefix (kbd "C-c l"))
 
 (use-package lsp-mode
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
@@ -255,7 +255,7 @@ method of managing this
   (global-set-key "\C-xt" 'transpose-lines); keybinding to transpose lines
   ;;org mode keybindings
   (global-set-key (kbd "\C-cw") 'balance-windows)
-  (global-set-key "\C-cl" 'org-store-link)
+  ;; (global-set-key "\C-cl" 'org-store-link)
        (global-set-key "\C-cc" 'org-capture)
        (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)

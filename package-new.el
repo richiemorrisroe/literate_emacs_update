@@ -108,7 +108,7 @@
 
 ;; Add company-lsp backend for metals
 (use-package company-lsp)
-(setq lsp-keymap-prefix "s-l")
+(setq lsp-keymap-prefix (kbd "C-c l"))
 
 (use-package lsp-mode
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
