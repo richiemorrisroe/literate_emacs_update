@@ -16,7 +16,6 @@
       (require 'bind-key)
       (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
                                    ("gnu" . "https://elpa.gnu.org/packages/")
-                                   ("marmalade" . "https://marmalade-repo.org/packages/")
                                    ("org" . "https://orgmode.org/elpa/")
                                    ("melpa-stable" . "https://stable.melpa.org/packages/")
                                    ))
@@ -33,10 +32,10 @@
 
       ;; (setq TeX-parse-self t))  
     )
-      (use-package elpy
-                   :ensure t
-                   :init
-                   (elpy-enable))
+      ;; (use-package elpy
+      ;;              :ensure t
+      ;;              :init
+      ;;              (elpy-enable))
       (use-package smartparens
                    :ensure t
                    :config
