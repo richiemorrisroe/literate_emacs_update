@@ -9,6 +9,7 @@
      (java . t)
      (C . t)
      (lisp . t)
+     (ipython . t)
      ;; (stan . t)
      ))
   (setq org-babel-confirm-evaluate nil)

@@ -92,7 +92,6 @@ method of managing this
   (setq package-enable-at-startup nil)
   (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
   (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
       (package-initialize)
@@ -457,6 +456,7 @@ We need to setup git before magit will work properly.
      (java . t)
      (C . t)
      (lisp . t)
+     (ipython . t)
      ;; (stan . t)
      ))
   (setq org-babel-confirm-evaluate nil)
@@ -649,8 +649,8 @@ bash Anaconda-latest-Linux-x86_64.sh
 ;;    "';'.join(module_completion('''%s'''))\n"
 ;;    python-shell-completion-string-code
 ;;    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
-(setq python-shell-interpreter "pyspark")
-(setq python-shell-interpreter-args "")
+(setq python-shell-interpreter "ipython")
+(setq python-shell-interpreter-args "-i --simple-prompt")
 
 (elpy-enable)
 #+END_SRC
