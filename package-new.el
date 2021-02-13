@@ -21,28 +21,28 @@
       (package-initialize)
 
       (unless (package-installed-p 'use-package)
-	(package-refresh-contents)
-	(package-install 'use-package))
+        (package-refresh-contents)
+        (package-install 'use-package))
 
-	(unless (package-installed-p 'diminish)
-	(package-refresh-contents)
-	(package-install 'diminish))
+        (unless (package-installed-p 'diminish)
+        (package-refresh-contents)
+        (package-install 'diminish))
 
       (eval-when-compile
-	(require 'use-package))
+        (require 'use-package))
       (require 'diminish)
       (require 'bind-key)
       (setq package-archives '(("elpa" . "http://tromey.com/elpa/")
-				   ("gnu" . "http://elpa.gnu.org/packages/")
-				   ("marmalade" . "http://marmalade-repo.org/packages/")
-				   ("org" . "http://orgmode.org/elpa/")
-				   ("melpa" . "http://melpa.org/packages/")
-				   ))
+                                   ("gnu" . "http://elpa.gnu.org/packages/")
+                                   ("marmalade" . "http://marmalade-repo.org/packages/")
+                                   ("org" . "http://orgmode.org/elpa/")
+                                   ("melpa" . "http://melpa.org/packages/")
+                                   ))
 
       (use-package flycheck
-		   :ensure t
-		   :config
-	(add-hook 'after-init-hook #'global-flycheck-mode))
+                   :ensure t
+                   :config
+        (add-hook 'after-init-hook #'global-flycheck-mode))
 
     (use-package tex 
       :ensure auctex
@@ -52,10 +52,10 @@
       ;; (setq TeX-parse-self t))  
     )
       (use-package smartparens
-		   :ensure t
-		   :config
-		   (smartparens-global-mode t)
-		   (require 'smartparens-config))
+                   :ensure t
+                   :config
+                   (smartparens-global-mode t)
+                   (require 'smartparens-config))
   (use-package ess
     :ensure t)
 
@@ -118,14 +118,14 @@
 
 ;; Add company-lsp backend for metals
 (use-package company-lsp)
-(setq lsp-keymap-prefix "\C-xl")
+(setq lsp-keymap-prefix (kbd "C-c l"))
 
 (use-package lsp-mode
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-	 (python-mode . lsp)
-	 (ess-mode . lsp)
-	 ;; if you want which-key integration
-	 (lsp-mode . lsp-enable-which-key-integration))
+         (python-mode . lsp)
+         (ess-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
          :config (setq lsp-prefer-flymake nil)
   :commands lsp)
 
@@ -153,8 +153,8 @@
 (use-package lsp-python-ms
   :ensure t
   :hook (python-mode . (lambda ()
-			  (require 'lsp-python-ms)
-			  (lsp))))
+                          (require 'lsp-python-ms)
+                          (lsp))))
 
 (setq company-minimum-prefix-length 1
       company-idle-delay 0.0)
