@@ -11,12 +11,6 @@
     (global-set-key "\C-cp" 'run-python)
     (global-set-key "\C-xc" 'inferior-lisp)
     (global-set-key "\C-cg" 'magit-status)
-
-    ;; (global-set-key "\C-cl" 'org-store-link)
-  ;;   (global-set-key "\C-cc" 'org-capture) ;;i should either start using
-  ;;                                         ;;these or delete them
-  ;;   (global-set-key "\C-ca" 'org-agenda)
-  ;; (global-set-key "\C-cb" 'org-iswitchb)
   (global-set-key "\C-ci" 'org-redisplay-inline-images)
 (global-set-key "\C-c_" 'ess-smart-assign)
 ;; Note that the built-in `describe-function' includes both functions

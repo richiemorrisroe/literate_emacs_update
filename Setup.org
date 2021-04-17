@@ -34,35 +34,38 @@ Seperate out the sudo parts, to prevent breakages.
 ***  Package/Settings Configuration
 
 #+BEGIN_SRC elisp :results none :tangle base-pkg.el
-            (unless (package-installed-p 'use-package)
-              (package-refresh-contents)
-              (package-install 'use-package))
+  (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
+			   ("gnu" . "https://elpa.gnu.org/packages/")))
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives
+	       '("melpa-stable" . "https://stable.melpa.org/packages/"))
+  (add-to-list 'package-archives
+	       '("melpa" . "https://melpa.org/packages/"))
 
-              (unless (package-installed-p 'diminish)
-              (package-refresh-contents)
-              (package-install 'diminish))
+  (unless (package-installed-p 'diminish)
+    (package-refresh-contents)
+    (package-install 'diminish))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
 
-        (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
-                                 ("gnu" . "https://elpa.gnu.org/packages/")))
-      (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-      (add-to-list 'package-archives
-      '("melpa-stable" . "https://stable.melpa.org/packages/"))
-      (add-to-list 'package-archives
-      '("melpa" . "https://melpa.org/packages/"))
+
+
+
   (use-package magit :ensure t)
   (use-package ess :ensure t
-    :init (require 'ess-site))
+	       :init (require 'ess-site))
   (use-package helpful
-          :ensure t)
-    (load-theme 'wheatgrass t)
-    (use-package elpy
-    :ensure t
+	       :ensure t)
+  (load-theme 'wheatgrass t)
+  (use-package elpy
+	       :ensure t
 
-    )
+	       )
   (setq use-package-always-defer t
-          use-package-always-ensure t
-          backup-directory-alist `((".*" . ,temporary-file-directory))
-          auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+	use-package-always-ensure t
+	backup-directory-alist `((".*" . ,temporary-file-directory))
+	auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
   ;; (desktop-save-mode 1)
 #+END_SRC
@@ -133,23 +136,26 @@ them before anything else breaks
 #+END_SRC
 
 #+BEGIN_SRC elisp :tangle settings.el
-    (add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
-      (setq debug-on-error t)
-      (setq-default indent-tabs-mode nil)
-      (show-paren-mode 1);;always show bracket highlighting.
-      (add-hook 'prog-mode-hook (lambda () global-linum-mode 1));;always show line numbers
-      (global-font-lock-mode 1)
-      (transient-mark-mode t) ;;turn on transient mark mode, must have turned it off by accident.
-      (setq x-select-enable-clipboard t) ;; enable clipboard in and out of emacs
-      (fset 'yes-or-no-p 'y-or-n-p) ;;allow y or n to stand for yes or no
-      (put 'erase-buffer 'disabled nil) ;;enable erase buffer command
-      (put 'set-goal-column 'disabled nil) ;;enable set goal column
-      ;; (load-theme 'wheatgrass t)
-      (setq tramp-default-method "ssh")
-      (setq dired-listing-switches "-alh")
-      (put 'upcase-region 'disabled nil)
-      (put 'downcase-region 'disabled nil)
-      (server-start)
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (ido-mode 1)
+  (add-hook 'shell-mode-hook 'compilation-shell-minor-mode) ;;enable compile buffers in shell mode
+  (setq debug-on-error t)
+  (setq-default indent-tabs-mode nil)
+  (show-paren-mode 1);;always show bracket highlighting.
+  (add-hook 'prog-mode-hook (lambda () global-linum-mode 1));;always show line numbers
+  (global-font-lock-mode 1)
+  (transient-mark-mode t) ;;turn on transient mark mode, must have turned it off by accident.
+  (setq x-select-enable-clipboard t) ;; enable clipboard in and out of emacs
+  (fset 'yes-or-no-p 'y-or-n-p) ;;allow y or n to stand for yes or no
+  (put 'erase-buffer 'disabled nil) ;;enable erase buffer command
+  (put 'set-goal-column 'disabled nil) ;;enable set goal column
+  ;; (load-theme 'wheatgrass t)
+  (setq tramp-default-method "ssh")
+  (setq dired-listing-switches "-alh")
+  (put 'upcase-region 'disabled nil)
+  (put 'downcase-region 'disabled nil)
+  (server-start)
 #+END_SRC
 
 #+begin_src elisp :tangle python-newer.el
@@ -159,71 +165,71 @@ them before anything else breaks
 
 
 #+BEGIN_SRC elisp :tangle lsp.el
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-  ;; Replace "sbcl" with the path to your implementation
-  (setq inferior-lisp-program "sbcl")
-  (use-package lsp-mode
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-           (python-mode . lsp)
-           (ess-r-mode . lsp)
-           (java-mode .lsp)
-           ;; if you want which-key integration
-           (lsp-mode . lsp-enable-which-key-integration))
-           :config (setq lsp-prefer-flymake nil)
-    :commands lsp)
+  ;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
+    ;; Replace "sbcl" with the path to your implementation
+    (setq inferior-lisp-program "sbcl")
+    (use-package lsp-mode
+      :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+             (python-mode . lsp)
+             (ess-r-mode . lsp)
+             (java-mode .lsp)
+             ;; if you want which-key integration
+             (lsp-mode . lsp-enable-which-key-integration))
+             :config (setq lsp-prefer-flymake nil)
+      :commands lsp)
 
-  ;; optionally
-  (use-package lsp-ui :commands lsp-ui-mode)
-  ;; (use-package company-lsp :commands company-lsp)
-  ;; ;; if you are helm user
-  ;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
-  ;; ;; if you are ivy user
-  ;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-  ;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+    ;; optionally
+    (use-package lsp-ui :commands lsp-ui-mode)
+    ;; (use-package company-lsp :commands company-lsp)
+    ;; ;; if you are helm user
+    ;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+    ;; ;; if you are ivy user
+    ;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+    ;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
-  ;; ;; optionally if you want to use debugger
-  ;; (use-package dap-mode)
-  ;; ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+    ;; ;; optionally if you want to use debugger
+    ;; (use-package dap-mode)
+    ;; ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
-  ;; optional if you want which-key integration
-  (use-package which-key
-    :config
-    (which-key-mode))
+    ;; optional if you want which-key integration
+    (use-package which-key
+      :config
+      (which-key-mode))
 
-  (setq gc-cons-threshold 400000000)
-  (setq read-process-output-max (* 1024 1024)) 
-  (setq lsp-response-timeout 60)
-  ;; (use-package lsp-python-ms
-  ;;   :ensure t
-  ;;   :hook (python-mode . (lambda ()
-  ;;                           (require 'lsp-python-ms)
-  ;;                           (lsp))))
-  ;; (use-package lsp-pyre
-  ;;   :ensure t
-  ;;   :hook (python-mode . (lambda ()
-  ;;                           (require 'lsp-pyre)
-  ;;                           (lsp))))
-  (use-package lsp-pyright
-    :ensure t
-    :hook (python-mode . (lambda ()
-                           (require 'lsp-pyright)
-                           (lsp))))
+    (setq gc-cons-threshold 400000000)
+    (setq read-process-output-max (* 1024 1024)) 
+    (setq lsp-response-timeout 60)
+    ;; (use-package lsp-python-ms
+    ;;   :ensure t
+    ;;   :hook (python-mode . (lambda ()
+    ;;                           (require 'lsp-python-ms)
+    ;;                           (lsp))))
+    ;; (use-package lsp-pyre
+    ;;   :ensure t
+    ;;   :hook (python-mode . (lambda ()
+    ;;                           (require 'lsp-pyre)
+    ;;                           (lsp))))
+    (use-package lsp-pyright
+      :ensure t
+      :hook (python-mode . (lambda ()
+                             (require 'lsp-pyright)
+                             (lsp))))
 
-  (setq company-minimum-prefix-length 1
-        company-idle-delay 0.1)
+    (setq company-minimum-prefix-length 1
+          company-idle-delay 0.1)
 
-  ;; (use-package lsp-jedi
-  ;;   :ensure t
-  ;;   :config
-  ;;   (with-eval-after-load "lsp-mode"
-  ;;     (add-to-list 'lsp-disabled-clients 'pyls)
-  ;;         (add-to-list 'lsp-enabled-clients 'jedi)))
+    ;; (use-package lsp-jedi
+    ;;   :ensure t
+    ;;   :config
+    ;;   (with-eval-after-load "lsp-mode"
+    ;;     (add-to-list 'lsp-disabled-clients 'pyls)
+    ;;         (add-to-list 'lsp-enabled-clients 'jedi)))
 
-  ;; (use-package lsp-jedi
-  ;;   :ensure t
-  ;;   :hook (python-mode . (lambda ()
-  ;;                          (require 'lsp-jedi)
-  ;;                          (lsp))))
+    ;; (use-package lsp-jedi
+    ;;   :ensure t
+    ;;   :hook (python-mode . (lambda ()
+    ;;                          (require 'lsp-jedi)
+    ;;                          (lsp))))
 #+END_SRC
 
 #+BEGIN_SRC elisp :results none :tangle .emacs
@@ -384,7 +390,7 @@ method of managing this
 
   ;; Add company-lsp backend for metals
   (use-package company-lsp)
-  (setq lsp-keymap-prefix (kbd "C-c l"))
+  (setq lsp-keymap-prefix  "\C-cl")
 
   (use-package lsp-mode
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
@@ -406,7 +412,8 @@ method of managing this
 
   ;; optionally if you want to use debugger
   (use-package dap-mode)
-  ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+  (require 'dap-python)
+  ;; (use-package dap-python) 
 
   ;; optional if you want which-key integration
   (use-package which-key

@@ -118,7 +118,7 @@
 
 ;; Add company-lsp backend for metals
 (use-package company-lsp)
-(setq lsp-keymap-prefix (kbd "C-c l"))
+(setq lsp-keymap-prefix  "\C-cl")
 
 (use-package lsp-mode
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
@@ -140,7 +140,8 @@
 
 ;; optionally if you want to use debugger
 (use-package dap-mode)
-;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+(require 'dap-python)
+;; (use-package dap-python) 
 
 ;; optional if you want which-key integration
 (use-package which-key
