@@ -650,6 +650,7 @@ bash Anaconda-latest-Linux-x86_64.sh
 ;;    python-shell-completion-string-code
 ;;    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
 (setq python-shell-interpreter "ipython")
+
 (setq python-shell-interpreter-args "-i --simple-prompt")
 
 (elpy-enable)
