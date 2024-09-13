@@ -157,6 +157,10 @@ them before anything else breaks
   (put 'upcase-region 'disabled nil)
   (put 'downcase-region 'disabled nil)
   (server-start)
+
+  (projectile-mode +1)
+  ;; Recommended keymap prefix on macOS
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 #+END_SRC
 
 #+begin_src elisp :tangle python-newer.el
