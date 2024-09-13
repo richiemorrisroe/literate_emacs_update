@@ -19,6 +19,6 @@
 (put 'downcase-region 'disabled nil)
 (server-start)
 
-(projectile-mode +1)
-;; Recommended keymap prefix on macOS
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+;; (projectile-mode +1)
+;; ;; Recommended keymap prefix on macOS
+;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)

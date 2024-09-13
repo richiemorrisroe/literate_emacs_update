@@ -1,5 +1,6 @@
 (require 'eglot)
-
+(use-package exec-path-from-shell)
+(exec-path-from-shell-initialize)
 ;; (use-package eglot-pyright
 ;;   :ensure t
 ;;   :config
