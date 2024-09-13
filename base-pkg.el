@@ -33,4 +33,3 @@
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
 ;; (desktop-save-mode 1)
-

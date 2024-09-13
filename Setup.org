@@ -111,6 +111,8 @@ Seperate out the sudo parts, to prevent breakages.
   ;; don't find this very useful, but it's frequently useful to only
   ;; look at interactive functions.
   (global-set-key (kbd "C-h C") #'helpful-command)
+  ;; handle uk mac keyboard and emacs snafu
+  (global-set-key (kbd "M-3") "#")
 #+END_SRC
 
 - Keybindings are also pretty simple, so I should load
@@ -166,6 +168,29 @@ them before anything else breaks
 #+begin_src elisp :tangle python-newer.el
 (setq python-shell-interpreter "ipython"
         python-shell-interpreter-args "--simple-prompt -i")
+#+end_src
+
+
+#+begin_src elisp :tangle eglot.el
+  (require 'eglot)
+
+  ;; (use-package eglot-pyright
+  ;;   :ensure t
+  ;;   :config
+  ;;   (add-to-list 'eglot-server-programs
+  ;;                '(python-mode . ("pyright-langserver" "--stdio"))))
+
+
+  (use-package lsp-pyright
+    :ensure t)
+
+  (add-hook 'python-mode-hook 'eglot-ensure)
+
+
+  (add-hook 'ess-r-mode-hook 'eglot-ensure)
+
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+
 #+end_src
 
 
