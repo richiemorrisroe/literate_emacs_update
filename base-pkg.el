@@ -14,7 +14,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-
+(use-package exec-path-from-shell)
 
 
 (use-package magit :ensure t)
@@ -27,6 +27,11 @@
              :ensure t
 
              )
+
+(use-package which-key
+  :config
+  (which-key-mode))
+
 (setq use-package-always-defer t
       use-package-always-ensure t
       backup-directory-alist `((".*" . ,temporary-file-directory))

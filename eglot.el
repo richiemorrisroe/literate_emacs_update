@@ -1,13 +1,19 @@
 (require 'eglot)
-(use-package exec-path-from-shell)
+
 (exec-path-from-shell-initialize)
 ;; (use-package eglot-pyright
 ;;   :ensure t
 ;;   :config
 ;;   (add-to-list 'eglot-server-programs
 ;;                '(python-mode . ("pyright-langserver" "--stdio"))))
-
-
+(global-tree-sitter-mode)
+(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+(use-package corfu
+  :custom
+  (corfu-cycle t)
+  (corfu-auto t)
+  :init
+  (global-corfu-mode))
 (use-package lsp-pyright
   :ensure t)
 

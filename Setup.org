@@ -50,7 +50,7 @@ Seperate out the sudo parts, to prevent breakages.
     (package-refresh-contents)
     (package-install 'use-package))
 
-
+  (use-package exec-path-from-shell)
 
 
   (use-package magit :ensure t)
@@ -63,6 +63,11 @@ Seperate out the sudo parts, to prevent breakages.
                :ensure t
 
                )
+
+  (use-package which-key
+    :config
+    (which-key-mode))
+
   (setq use-package-always-defer t
         use-package-always-ensure t
         backup-directory-alist `((".*" . ,temporary-file-directory))
@@ -139,6 +144,10 @@ them before anything else breaks
 #+END_SRC
 
 #+BEGIN_SRC elisp :tangle settings.el
+  (projectile-mode +1)
+;; Recommended keymap prefix on macOS
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (global-set-key (kbd "M-3") "#")
   (setq ido-enable-flex-matching t)
   (setq ido-everywhere t)
   (ido-mode 1)
@@ -166,22 +175,32 @@ them before anything else breaks
 #+END_SRC
 
 #+begin_src elisp :tangle python-newer.el
-(setq python-shell-interpreter "ipython"
-        python-shell-interpreter-args "--simple-prompt -i")
+  (setq python-shell-interpreter "ipython"
+          python-shell-interpreter-args "--simple-prompt -i")
+(use-package python-black
+  :demand t
+  :after python
+  :hook (python-mode . python-black-on-save-mode-enable-dwim))
 #+end_src
 
 
 #+begin_src elisp :tangle eglot.el
   (require 'eglot)
-  (use-package exec-path-from-shell)
+
   (exec-path-from-shell-initialize)
   ;; (use-package eglot-pyright
   ;;   :ensure t
   ;;   :config
   ;;   (add-to-list 'eglot-server-programs
   ;;                '(python-mode . ("pyright-langserver" "--stdio"))))
-
-
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+  (use-package corfu
+    :custom
+    (corfu-cycle t)
+    (corfu-auto t)
+    :init
+    (global-corfu-mode))
   (use-package lsp-pyright
     :ensure t)
 
@@ -223,9 +242,6 @@ them before anything else breaks
     ;; ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
     ;; optional if you want which-key integration
-    (use-package which-key
-      :config
-      (which-key-mode))
 
     (setq gc-cons-threshold 400000000)
     (setq read-process-output-max (* 1024 1024)) 
@@ -807,23 +823,27 @@ bash Anaconda-latest-Linux-x86_64.sh
 #+END_SRC
 
 #+BEGIN_SRC lisp :tangle python.el
-;; (setq exec-path (append  '("~/anaconda3/bin") exec-path))
-;; (when (executable-find "jupyter")
-;;   (setq
-;;    python-shell-interpreter "jupyter"
-;;    python-shell-interpreter-args "console --simple-prompt"
-;;    python-shell-prompt-regexp "In \\[[0-9]+\\]: "
-;;    python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
-;;    python-shell-completion-setup-code
-;;    "from IPython.core.completerlib import module_completion"
-;;    python-shell-completion-module-string-code
-;;    "';'.join(module_completion('''%s'''))\n"
-;;    python-shell-completion-string-code
-;;    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
-(setq python-shell-interpreter "jupyter")
-(setq python-shell-interpreter-args "console")
+  ;; (setq exec-path (append  '("~/anaconda3/bin") exec-path))
+  ;; (when (executable-find "jupyter")
+  ;;   (setq
+  ;;    python-shell-interpreter "jupyter"
+  ;;    python-shell-interpreter-args "console --simple-prompt"
+  ;;    python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+  ;;    python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+  ;;    python-shell-completion-setup-code
+  ;;    "from IPython.core.completerlib import module_completion"
+  ;;    python-shell-completion-module-string-code
+  ;;    "';'.join(module_completion('''%s'''))\n"
+  ;;    python-shell-completion-string-code
+  ;;    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
+  (setq python-shell-interpreter "jupyter")
+  (setq python-shell-interpreter-args "console")
 
-(elpy-enable)
+  (elpy-enable)
+(use-package python-black
+  :demand t
+  :after python
+  :hook (python-mode . python-black-on-save-mode-enable-dwim))
 #+END_SRC
 
 ** Webserver stuff

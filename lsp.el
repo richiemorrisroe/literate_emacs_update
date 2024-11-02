@@ -25,9 +25,6 @@
   ;; ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
   ;; optional if you want which-key integration
-  (use-package which-key
-    :config
-    (which-key-mode))
 
   (setq gc-cons-threshold 400000000)
   (setq read-process-output-max (* 1024 1024)) 
