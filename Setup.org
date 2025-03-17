@@ -128,8 +128,9 @@ them before anything else breaks
   'org-babel-load-languages
    '((R . t)
      (emacs-lisp . t)
-     (sql . t)
+     (sqlite . t)
      (python . t)
+     ;; (ipython . t)
      (latex . t)
      (shell . t)
      (java . t)
@@ -198,7 +199,7 @@ them before anything else breaks
   (use-package corfu
     :custom
     (corfu-cycle t)
-    (corfu-auto t)
+    (corfu-auto nil)
     :init
     (global-corfu-mode))
   (use-package lsp-pyright
@@ -775,7 +776,9 @@ First, allow org to do it's thing.
 #+END_SRC
 
 
-Add thinkpad/Linux related power saving functions. The joy of tlp is that it just works, rather than requiring me to mess around with kernel settings.
+Add thinkpad/Linux related power saving functions. The joy of tlp is
+that it just works, rather than requiring me to mess around with
+kernel settings.
 ** LaTeX
 
 #+BEGIN_SRC sh

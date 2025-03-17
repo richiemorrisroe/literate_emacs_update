@@ -2,8 +2,9 @@
 'org-babel-load-languages
  '((R . t)
    (emacs-lisp . t)
-   (sql . t)
+   (sqlite . t)
    (python . t)
+   ;; (ipython . t)
    (latex . t)
    (shell . t)
    (java . t)

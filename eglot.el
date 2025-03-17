@@ -11,7 +11,7 @@
 (use-package corfu
   :custom
   (corfu-cycle t)
-  (corfu-auto t)
+  (corfu-auto nil)
   :init
   (global-corfu-mode))
 (use-package lsp-pyright
