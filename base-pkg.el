@@ -7,6 +7,10 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 
+(use-package yaml-mode :ensure t)
+(use-package dockerfile-mode :ensure t)
+(use-package agent-shell :ensure t)
+
 (unless (package-installed-p 'diminish)
   (package-refresh-contents)
   (package-install 'diminish))

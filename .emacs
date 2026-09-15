@@ -6,3 +6,5 @@
 (load  "~/Dropbox/literate_emacs_update/settings.el")
 (load  "~/Dropbox/literate_emacs_update/lsp.el")
 (load  "~/Dropbox/literate_emacs_update/python-newer.el")
+(add-to-list 'load-path "~/Dropbox/literate_emacs_update/reviewr")
+(require 'reviewr)

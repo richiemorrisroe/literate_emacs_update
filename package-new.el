@@ -1,6 +1,6 @@
 (setq package-list '(use-package
-		       diminish
-		       ))
+			 diminish
+			 ))
   ;;taken from http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
   (package-initialize)
 
@@ -9,7 +9,7 @@
 
   (dolist (package package-list)
     (unless (package-installed-p package)
-      (package-install package)))
+	(package-install package)))
 
 (require 'package)
   (setq package-enable-at-startup nil)
